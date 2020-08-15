@@ -6,7 +6,7 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 # GOAL:
-# create leech handler class
+# create /leech handler
 
 from re import match as re_match
 from asyncio import sleep as asyncio_sleep
@@ -14,7 +14,7 @@ from os.path import join as os_path_join
 from math import floor
 from pyrogram import Client, Message
 from aria2p.downloads import Download, File
-from bot import COMMAND, LOCAL, STATUS, CONFIG
+from bot import LOCAL, STATUS, CONFIG
 from bot.plugins import aria2
 from bot.handlers import upload_to_tg_handler
 
@@ -22,11 +22,12 @@ from bot.handlers import upload_to_tg_handler
 async def func(client : Client, message: Message):
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
     dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
-    aria2_api = STATUS.ARIA2_API or aria2.aria2(
+    STATUS.ARIA2_API = STATUS.ARIA2_API or aria2.aria2(
         config={
             'dir' : dir
         }
     )
+    aria2_api = STATUS.ARIA2_API
     await aria2_api.start()
     link = " ".join(message.command[1:])
     LOGGER.debug(f'Leeching : {link}')
@@ -39,7 +40,7 @@ async def func(client : Client, message: Message):
                 os_path_join(dir, file.path),
                 reply
             )
-        download.purge()
+        download.remove(force=True, files=True)
     else:
         for gid in download.followed_by_ids:
             reply = await message.reply(f"New download <code>{gid}</code>", quote=False)
@@ -50,7 +51,7 @@ async def func(client : Client, message: Message):
                     os_path_join(dir, file.path),
                     reply
                 )
-            aria2_api.get_download(gid).purge()
+            aria2_api.get_download(gid).remove(force=True, files=True)
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
     try:

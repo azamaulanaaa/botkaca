@@ -6,7 +6,8 @@ from bot.handlers import (
     password_handler,
     wrong_room_handler,
     help_message_handler,
-    leech_handler
+    leech_handler,
+    cancel_leech_handler
 )
 
 # Initialize bot
@@ -62,6 +63,13 @@ app.add_handler(
     )
 )
 
+# register /cancel handler
+app.add_handler(
+    MessageHandler(
+        cancel_leech_handler.func,
+        filters=Filters.command(COMMAND.CANCEL_LEECH)
+    )
+)
 
 if __name__ == '__main__':
     app.run()

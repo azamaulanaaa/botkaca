@@ -1,5 +1,5 @@
 from pyrogram import Client, Message
-from bot import COMMAND, LOCAL, CONFIG
+from bot import LOCAL, CONFIG
 from bot.handlers import help_message_handler
 
 async def func(client : Client, message: Message):

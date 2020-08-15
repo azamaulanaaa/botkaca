@@ -16,5 +16,6 @@ LOCAL = Local({
     'COMMAND_START' : 'start bot',
     'COMMAND_PASSWORD' : 'enter password that required',
     'COMMAND_HELP' : 'this message',
-    'COMMAND_LEECH' : 'leech link or magnet'
+    'COMMAND_LEECH' : 'leech link or magnet',
+    'COMMAND_CANCEL_LEECH' : 'cancel leeching' 
 })
