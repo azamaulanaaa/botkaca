@@ -37,13 +37,12 @@ async def func(filepath: str, message: Message, delete=False):
             await func(filepath, message, delete)
         if delete:
             os_rmdir(filepath)
-        await message.delete()
         return
 
     video = ['.mp4','.avi','.mkv']
     photo = ['.jpg','.jpeg','.png']
 
-    file_ext = os_path.splitext(filepath)[1]
+    file_ext = os_path.splitext(filepath)[1].lower()
     info = {
         "start_time" : time(),
         "name" : os_path.basename(filepath)
