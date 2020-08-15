@@ -35,7 +35,7 @@ async def progress_dl(message : Message, download : Download):
             else:
                 await message.edit_text(download.error_message)
             await asyncio_sleep(1)
-            progress_dl(message, download)
+            await progress_dl(message, download)
         else:
             await message.edit_text(
                 LOCAL.ARIA2_DOWNLOAD_SUCCESS.format(
