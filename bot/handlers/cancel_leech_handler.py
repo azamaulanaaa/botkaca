@@ -18,7 +18,7 @@ async def func(client : Client, message: Message):
         except:
             pass
 
-    gid = message.command()[1]
+    gid = message.command[1]
     if STATUS.ARIA2_API:
         aria2_api = STATUS.ARIA2_API
         try:
