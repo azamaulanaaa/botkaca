@@ -87,3 +87,4 @@ async def progress_upload_tg(current, total, message, info):
             eta = formater.format_time(total * time_passed / current)
         )
     )
+    await asyncio_sleep(3)
