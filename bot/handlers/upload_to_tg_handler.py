@@ -73,7 +73,7 @@ async def func(filepath: str, message: Message, delete=False):
 async def progress_upload_tg(current, total, message, info):
     percentage = round(current * 100 / total)
     block = ""
-    for i in range(10):
+    for i in range(1, 10):
         if i <= floor(percentage/10):
             block += "▰"
         else:
