@@ -67,6 +67,7 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
                     name = download.name,
                     block = block,
                     progress_string = download.progress_string(),
+                    total_size = download.total_length_string(),
                     download_speed = download.download_speed_string(),
                     upload_speed = download.upload_speed_string(),
                     eta = download.eta_string(),
