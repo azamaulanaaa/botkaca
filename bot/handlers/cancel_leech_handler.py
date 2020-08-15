@@ -12,7 +12,7 @@ from pyrogram import Client, Message
 from bot import LOCAL, CONFIG, STATUS
 
 async def func(client : Client, message: Message):
-    if message.command()[1:]:        
+    if len(message.command) <= 1:        
         try:
             await message.delete()
         except:

@@ -20,7 +20,7 @@ from bot.handlers import upload_to_tg_handler
 
 
 async def func(client : Client, message: Message):
-    if message.command()[1:]:        
+    if len(message.command) <= 1:        
         try:
             await message.delete()
         except:
