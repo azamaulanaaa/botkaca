@@ -27,7 +27,6 @@ class aria2(aria2p.API):
 
     def __init__(self, config={}):
         self.__config.update(config)
-        self.__local.update(local)
 
     async def start(self):
         if not self.__process:
