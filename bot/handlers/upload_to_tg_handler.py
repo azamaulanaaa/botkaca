@@ -77,12 +77,13 @@ async def progress_upload_tg(current, total, message, info):
             block += "/"
         else:
             block += "."
+    time_passed = time() - info["start_time"]
     await message.edit(
         LOCAL.UPLOADING_PROGRESS.format(
             name = info["name"],
             block = block,
             percentage = f"{percentage}%",
-            upload_speed = formater.format_bytes(current / info["start_time"]),
-            eta = formater.format_time(total * info["start_time"] / current)
+            upload_speed = formater.format_bytes(current / time_passed),
+            eta = formater.format_time(total * time_passed / current)
         )
     )
