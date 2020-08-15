@@ -42,6 +42,7 @@ async def func(client : Client, message: Message):
         for gid in download.followed_by_ids:
             reply = message.reply(f"New download <code>{gid}</code>", quote=False)
             await progress_dl(reply, aria2_api, gid)
+            download = aria2_api.get_download(gid)
             for filepath in download.files:
                 await upload_to_tg_handler.func(
                     filepath,
