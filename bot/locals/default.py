@@ -12,6 +12,6 @@ LOCAL = Local({
     'ARIA2_DEAD_LINK' : 'Download auto canceled : <code>{name}</code>\nYour Torrent/Link is Dead.',
     'COMMAND_START' : 'start bot',
     'COMMAND_PASSWORD' : 'enter password that required',
-    'COMMAND_HELP' : 'this message'
+    'COMMAND_HELP' : 'this message',
     'COMMAND_LEECH' : 'leech link or magnet'
 })
