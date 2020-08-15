@@ -11,6 +11,7 @@ LOGGER = logging.getLogger(__name__)
 from re import match as re_match
 from asyncio import sleep as asyncio_sleep
 from os.path import join as os_path_join
+from math import floor
 from pyrogram import Client, Message
 from aria2p.downloads import Download, File
 from bot import COMMAND, LOCAL, STATUS, CONFIG
@@ -56,11 +57,18 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
         download = aria2_api.get_download(gid)
         if not download.is_complete:
             if not download.error_message:
+                block = ""
+                for i in range(10):
+                    if i <= floor(download.progress/10):
+                        block += "▰"
+                    else:
+                        block += "▱"
                 text = LOCAL.ARIA2_DOWNLOAD_STATUS.format(
                     name = download.name,
+                    block = block,
+                    progress_string = download.progress_string(),
                     download_speed = download.download_speed_string(),
                     upload_speed = download.upload_speed_string(),
-                    progress_string = download.progress_string(),
                     eta = download.eta_string(),
                     gid = download.gid
                 )
