@@ -40,7 +40,7 @@ async def func(client : Client, message: Message):
             )
     else:
         for gid in download.followed_by_ids:
-            reply = message.reply(f"New download <code>{gid}</code>", quote=False)
+            reply = await message.reply(f"New download <code>{gid}</code>", quote=False)
             await progress_dl(reply, aria2_api, gid)
             download = aria2_api.get_download(gid)
             for file in download.files:
