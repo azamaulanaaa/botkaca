@@ -29,7 +29,7 @@ async def func(client : Client, message: Message):
     download = aria2_api.add_magnet(link)
     await progress_dl(reply, download)
 
-async def progress_dl(message : Message, download : Download):
+async def progress_dl(message : Message, download : Download, previous_text=None):
     try:
         if not download.is_complete:
             if not download.error_message:
@@ -41,11 +41,12 @@ async def progress_dl(message : Message, download : Download):
                     eta = download.eta_string(),
                     gid = download.gid
                 )
-                await message.edit(text)
+                if text != previous_text:
+                    await message.edit(text)
             else:
                 await message.edit(download.error_message)
             await asyncio_sleep(1)
-            await progress_dl(message, download)
+            await progress_dl(message, download, text)
         else:
             await message.edit(
                 LOCAL.ARIA2_DOWNLOAD_SUCCESS.format(
