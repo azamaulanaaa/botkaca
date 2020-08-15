@@ -20,6 +20,12 @@ from bot.handlers import upload_to_tg_handler
 
 
 async def func(client : Client, message: Message):
+    if len(message.command()) <= 1:        
+        try:
+            await message.delete()
+        except:
+            pass
+        
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
     dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
     STATUS.ARIA2_API = STATUS.ARIA2_API or aria2.aria2(
@@ -29,8 +35,10 @@ async def func(client : Client, message: Message):
     )
     aria2_api = STATUS.ARIA2_API
     await aria2_api.start()
+
     link = " ".join(message.command[1:])
     LOGGER.debug(f'Leeching : {link}')
+    
     download = aria2_api.add_uris([link])
     await progress_dl(reply, aria2_api, download.gid)
     download = aria2_api.get_download(download.gid)
