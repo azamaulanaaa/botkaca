@@ -38,6 +38,7 @@ async def func(client : Client, message: Message):
                 os_path_join(dir, file.path),
                 reply
             )
+        download.purge()
     else:
         for gid in download.followed_by_ids:
             reply = await message.reply(f"New download <code>{gid}</code>", quote=False)
@@ -49,8 +50,6 @@ async def func(client : Client, message: Message):
                     reply
                 )
             download.purge()
-    download.purge()
-       
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
     try:
