@@ -51,3 +51,6 @@ class aria2(aria2p.API):
                     port=int(self.__config['rpc-listen-port'])
                 )
             )
+    
+    def __getattr__(self, name):
+        return getattr(self.__api, name)
