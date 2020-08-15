@@ -25,16 +25,17 @@ async def func(client : Client, message: Message):
         }
     )
     await aria2_api.start()
-    link = message.command[1]
+    link = " ".join(message.command[1:])
     download = aria2_api.add_magnet(link)
-    await progress_dl(reply, download)
+    await progress_dl(reply, aria2_api, download.gid)
     for gid in download.followed_by_ids:
         reply = message.reply(f"New download <code>{gid}</code>", quote=False)
-        await progress_dl(reply, aria2_api.get_download(gid))
+        await progress_dl(reply, aria2_api, gid)
         
 
-async def progress_dl(message : Message, download : Download, previous_text=None):
+async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
     try:
+        download = aria2_api.get_download(gid)
         if not download.is_complete:
             if not download.error_message:
                 text = LOCAL.ARIA2_DOWNLOAD_STATUS.format(
@@ -50,7 +51,7 @@ async def progress_dl(message : Message, download : Download, previous_text=None
             else:
                 await message.edit(download.error_message)
             await asyncio_sleep(1)
-            await progress_dl(message, download, text)
+            await progress_dl(message, aria2_api, gid, text)
         else:
             await message.edit(
                 LOCAL.ARIA2_DOWNLOAD_SUCCESS.format(
