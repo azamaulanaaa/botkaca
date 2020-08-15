@@ -66,7 +66,6 @@ async def func(filepath: str, message: Message, delete=False):
         )
     )
     LOGGER.debug(f'Uploaded : {filepath}')
-    await message.delete()
     if delete:
         os_remove(filepath)
 

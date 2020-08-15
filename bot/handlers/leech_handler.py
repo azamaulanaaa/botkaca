@@ -60,6 +60,7 @@ async def func(client : Client, message: Message):
                     os_path_join(dir, file.path),
                     reply
                 )
+            await reply.delete()
             aria2_api.get_download(gid).remove(force=True, files=True)
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
