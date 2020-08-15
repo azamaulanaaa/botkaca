@@ -26,7 +26,6 @@ async def func(filepath: str, message: Message, delete=False):
         return
 
     if os_path.isdir(filepath):
-        await message.delete()
         ls = os_lisdir(filepath)
         for filepath in ls:
             message = await message.reply_text(
@@ -37,6 +36,7 @@ async def func(filepath: str, message: Message, delete=False):
             await func(filepath, message, delete)
         if delete:
             os_rmdir(filepath)
+        await message.delete()
         return
 
     video = ['.mp4','.avi','.mkv']
