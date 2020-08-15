@@ -1,0 +1,6 @@
+*__pycache__*
+downloads
+sessions
+.vscode
+.env
+.pyenv
