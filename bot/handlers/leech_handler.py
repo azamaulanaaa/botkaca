@@ -50,7 +50,8 @@ async def func(client : Client, message: Message):
             )
         download.remove(force=True, files=True)
     else:
-        for gid in download.followed_by_ids:
+        gids = download.followed_by_ids
+        for gid in gids:
             reply = await message.reply(f"New download <code>{gid}</code>", quote=False)
             await progress_dl(reply, aria2_api, gid)
             download = aria2_api.get_download(gid)
