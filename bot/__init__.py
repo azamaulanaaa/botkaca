@@ -72,7 +72,8 @@ from bot.command import Command
 COMMAND = Command({
     'START' : 'start',
     'PASSWORD' : 'pass',
-    'HELP' : 'help'
+    'HELP' : 'help',
+    'LEECH' : 'leech'
 })
 
 # GOAL:

@@ -5,7 +5,8 @@ from bot.handlers import (
     start_message_handler,
     password_handler,
     wrong_room_handler,
-    help_message_handler
+    help_message_handler,
+    leech_handler
 )
 
 # Initialize bot
@@ -44,7 +45,6 @@ if int(CONFIG.BOT_PRIVATE):
             filters = lambda msg: not msg.chat.id in CONFIG.CHAT_ID
         )
     )
-    
 
 # register /help handler
 app.add_handler(
@@ -53,6 +53,15 @@ app.add_handler(
         filters=Filters.command(COMMAND.HELP)
     )
 )
+
+# register /leech handler
+app.add_handler(
+    MessageHandler(
+        leech_handler.func,
+        filters=Filters.command(COMMAND.LEECH)
+    )
+)
+
 
 if __name__ == '__main__':
     app.run()
