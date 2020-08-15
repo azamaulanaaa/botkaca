@@ -83,5 +83,6 @@ from time import time
 from bot.status import Status
 
 STATUS = Status({
-    'START_TIME' : time()
+    'START_TIME' : time(),
+    'ARIA2_API' : None
 })

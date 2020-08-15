@@ -8,7 +8,7 @@ from bot.plugins import aria2
 
 async def func(client : Client, message: Message):
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
-    aria2_api = STATUS.ARIA2 or aria2.aria2()
+    aria2_api = STATUS.ARIA2_API or aria2.aria2()
     await aria2_api.start()
     link = message.command[1]
     if isMagnet(link):
