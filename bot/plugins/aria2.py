@@ -35,7 +35,7 @@ class aria2(aria2p.API):
     async def start(self):
         if not self.__process:
             cmd = [
-                "aria2",
+                "aria2c",
                 "--enable-rpc"
             ]
             for key in self.__config:
