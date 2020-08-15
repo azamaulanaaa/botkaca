@@ -23,7 +23,7 @@ async def func(client : Client, message: Message):
         pass
 
 def isMagnet(text):
-    return re_match(r'$magnet\:\?xt=urn\:',text)
+    return re_match(r'^magnet\:\?xt=urn\:',text)
 
 async def progress_dl(message : Message, download : Download):
     try:
