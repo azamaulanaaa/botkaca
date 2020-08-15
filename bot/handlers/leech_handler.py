@@ -28,7 +28,7 @@ async def func(client : Client, message: Message):
     )
     await aria2_api.start()
     link = " ".join(message.command[1:])
-    download = aria2_api.add_magnet(link)
+    download = aria2_api.add_uris([link])
     await progress_dl(reply, aria2_api, download.gid)
     if not download.followed_by_ids:
         for file in download.files:
