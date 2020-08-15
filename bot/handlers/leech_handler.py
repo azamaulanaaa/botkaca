@@ -35,7 +35,7 @@ async def func(client : Client, message: Message):
     if not download.followed_by_ids:
         for file in download.files:
             await upload_to_tg_handler.func(
-                file.path
+                os_path_join(dir, file.path),
                 reply
             )
     else:
@@ -45,7 +45,7 @@ async def func(client : Client, message: Message):
             download = aria2_api.get_download(gid)
             for file in download.files:
                 await upload_to_tg_handler.func(
-                    file.path,
+                    os_path_join(dir, file.path),
                     reply
                 )
        
