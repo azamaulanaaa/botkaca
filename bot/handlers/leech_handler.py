@@ -31,6 +31,7 @@ async def func(client : Client, message: Message):
     LOGGER.debug(f'Leeching : {link}')
     download = aria2_api.add_uris([link])
     await progress_dl(reply, aria2_api, download.gid)
+    download = aria2_api.get_download(download.gid)
     if not download.followed_by_ids:
         for file in download.files:
             await upload_to_tg_handler.func(
