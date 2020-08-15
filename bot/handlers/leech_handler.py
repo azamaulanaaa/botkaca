@@ -31,7 +31,7 @@ async def func(client : Client, message: Message):
     download = aria2_api.add_magnet(link)
     await progress_dl(reply, aria2_api, download.gid)
     if not download.followed_by_ids:
-        for file in downlaod.files:
+        for file in download.files:
             await upload_to_tg_handler.func(file.path, reply)
     else:
         for gid in download.followed_by_ids:
