@@ -10,6 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir as os_rmdir
 from time import time
+from math import floor
 from pyrogram import Message
 from bot import COMMAND, LOCAL, CONFIG
 from bot.plugins import formater
@@ -73,10 +74,10 @@ async def progress_upload_tg(current, total, message, info):
     percentage = round(current * 100 / total)
     block = ""
     for i in range(10):
-        if i < (percentage/10):
-            block += "/"
+        if i <= floor(percentage/10):
+            block += "▰"
         else:
-            block += "."
+            block += "▱"
     time_passed = time() - info["start_time"]
     await message.edit(
         LOCAL.UPLOADING_PROGRESS.format(
