@@ -5,7 +5,7 @@
 def format_bytes(bytes):
     units = ['B', 'KB','MB','GB']
     for unit in units:
-        out = f'{int(bytes)} {unit}'
+        out = f'{round(bytes,2)} {unit}'
         bytes = bytes / 1024
         if bytes < 1:
             break
