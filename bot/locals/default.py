@@ -10,6 +10,8 @@ LOCAL = Local({
     'ARIA2_DOWNLOAD_SUCCESS' : 'File downloaded : <code>{name}</code>',
     'ARIA2_DOWNLOAD_CANCELED' : 'Download canceled : <code>{name}</code>',
     'ARIA2_DEAD_LINK' : 'Download auto canceled : <code>{name}</code>\nYour Torrent/Link is Dead.',
+    'UPLOADING_FILE' : 'Uploading : <code>{name}</code>',
+    'UPLOADING_PROGRESS' : '<code>{name}</code>\n{block} {percentage}\nUP: {upload_speed}\nETA : {eta}',
     'COMMAND_START' : 'start bot',
     'COMMAND_PASSWORD' : 'enter password that required',
     'COMMAND_HELP' : 'this message',

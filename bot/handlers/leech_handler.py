@@ -15,23 +15,29 @@ from pyrogram import Client, Message
 from aria2p.downloads import Download
 from bot import COMMAND, LOCAL, STATUS, CONFIG
 from bot.plugins import aria2
+from bot.handlers import upload_to_tg_handler
 
 
 async def func(client : Client, message: Message):
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
+    dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
     aria2_api = STATUS.ARIA2_API or aria2.aria2(
         config={
-            'dir' : os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
+            'dir' : dir
         }
     )
     await aria2_api.start()
     link = " ".join(message.command[1:])
     download = aria2_api.add_magnet(link)
     await progress_dl(reply, aria2_api, download.gid)
-    for gid in download.followed_by_ids:
-        reply = message.reply(f"New download <code>{gid}</code>", quote=False)
-        await progress_dl(reply, aria2_api, gid)
-        
+    if not download.followed_by_ids:
+        await upload_to_tg_handler.func(os_path_join(dir,download.name), reply)
+    else:
+        for gid in download.followed_by_ids:
+            reply = message.reply(f"New download <code>{gid}</code>", quote=False)
+            await progress_dl(reply, aria2_api, gid)
+            await upload_to_tg_handler.func(os_path_join(dir,download.name), reply)
+       
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
     try:
