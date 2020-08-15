@@ -69,7 +69,7 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
         if not download.is_complete:
             if not download.error_message:
                 block = ""
-                for i in range(1, 10):
+                for i in range(1, 11):
                     if i <= floor(download.progress/10):
                         block += "▰"
                     else:
