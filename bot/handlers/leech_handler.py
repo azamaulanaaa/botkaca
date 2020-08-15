@@ -1,10 +1,3 @@
-# GOAL:
-# getting track for logging
-
-import logging
-
-LOGGER = logging.getLogger(__name__)
-
 from re import match as re_match
 from asyncio import sleep as asyncio_sleep
 from os.path import join as os_path_join
@@ -23,7 +16,6 @@ async def func(client : Client, message: Message):
     )
     await aria2_api.start()
     link = message.command[1]
-    LOGGER.info(link)
     if isMagnet(link):
         download = aria2_api.add_magnet(link)
         await progress_dl(reply, download)
