@@ -3,7 +3,7 @@
 
 import logging
 
-logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 # GOAL:
 # makes module load by import *

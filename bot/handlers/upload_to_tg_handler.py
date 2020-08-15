@@ -1,3 +1,13 @@
+# GOAL:
+# getting track for logging
+
+import logging
+
+LOGGER = logging.getLogger(__name__)
+
+# GOAL:
+# universal function for uploading file to telegram
+
 from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir as os_rmdir
 from time import time
 from pyrogram import Message
@@ -6,6 +16,7 @@ from bot.plugins import formater
 
 async def func(filepath: str, message: Message, delete=False):
     if not os_path.exists(filepath):
+        LOGGER.error(f'File not found : {filepath}')
         await message.edit_text(
             LOCAL.UPLOAD_FAILED_FILE_MISSING.format(
                 name = os_path.basename(filepath)
@@ -43,7 +54,8 @@ async def func(filepath: str, message: Message, delete=False):
         upload_fn = message.reply_video
     else:
         upload_fn = message.reply_document
-        
+    
+    LOGGER.debug(f'Uploading : {filepath}')
     await upload_fn(
         filepath,
         progress=progress_upload_tg,
@@ -52,6 +64,7 @@ async def func(filepath: str, message: Message, delete=False):
             info
         )
     )
+    LOGGER.debug(f'Uploaded : {filepath}')
     await message.delete()
     if delete:
         os_remove(filepath)
