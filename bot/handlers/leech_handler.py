@@ -16,6 +16,7 @@ async def func(client : Client, message: Message):
     )
     await aria2_api.start()
     link = message.command[1]
+    print(link)
     if isMagnet(link):
         download = aria2_api.add_magnet(link)
         await progress_dl(reply, download)
