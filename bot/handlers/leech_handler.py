@@ -16,14 +16,8 @@ async def func(client : Client, message: Message):
     )
     await aria2_api.start()
     link = message.command[1]
-    if isMagnet(link):
-        download = aria2_api.add_magnet(link)
-        await progress_dl(reply, download)
-    else:
-        pass
-
-def isMagnet(text):
-    return re_match(r'^magnet\:\?xt=urn\:',text)
+    download = aria2_api.add_magnet(link)
+    await progress_dl(reply, download)
 
 async def progress_dl(message : Message, download : Download):
     try:
