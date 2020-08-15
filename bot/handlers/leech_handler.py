@@ -12,7 +12,7 @@ from re import match as re_match
 from asyncio import sleep as asyncio_sleep
 from os.path import join as os_path_join
 from pyrogram import Client, Message
-from aria2p.downloads import Download
+from aria2p.downloads import Download, File
 from bot import COMMAND, LOCAL, STATUS, CONFIG
 from bot.plugins import aria2
 from bot.handlers import upload_to_tg_handler
@@ -31,12 +31,14 @@ async def func(client : Client, message: Message):
     download = aria2_api.add_magnet(link)
     await progress_dl(reply, aria2_api, download.gid)
     if not download.followed_by_ids:
-        await upload_to_tg_handler.func(os_path_join(dir,download.name), reply)
+        for file in downlaod.files:
+            await upload_to_tg_handler.func(file.path, reply)
     else:
         for gid in download.followed_by_ids:
             reply = message.reply(f"New download <code>{gid}</code>", quote=False)
             await progress_dl(reply, aria2_api, gid)
-            await upload_to_tg_handler.func(os_path_join(dir,download.name), reply)
+            for file in downlaod.files:
+                await upload_to_tg_handler.func(file.path, reply)
        
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
