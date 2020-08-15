@@ -20,8 +20,7 @@ class aria2(aria2p.API):
         "rpc-listen-all" : "false",
         "rpc-listen-port": "6800",
         "seed-ratio" : "0",
-        "seed-time" : "0",
-        "follow-torrent" : "mem",
+        "seed-time" : "0"
     }
     __process = None
 
