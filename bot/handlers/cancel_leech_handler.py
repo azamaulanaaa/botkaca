@@ -23,6 +23,7 @@ async def func(client : Client, message: Message):
         aria2_api = STATUS.ARIA2_API
         try:
             download = aria2_api.get_download(gid)
+            download.remove(force=True, files=True)
             LOGGER.debug(f'Cancel upload : {download.name}')
             await message.reply_text(
                 LOCAL.ARIA2_DOWNLOAD_CANCELED.format(
