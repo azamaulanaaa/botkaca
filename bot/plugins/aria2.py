@@ -23,12 +23,9 @@ class aria2(aria2p.API):
         "seed-time" : "0",
         "follow-torrent" : "mem",
     }
-    __local = {
-        "failed" : "FAILED"
-    }
     __process = None
 
-    def __init__(self, config={}, local={}):
+    def __init__(self, config={}):
         self.__config.update(config)
         self.__local.update(local)
 
