@@ -1,3 +1,13 @@
+# GOAL:
+# getting track for logging
+
+import logging
+
+LOGGER = logging.getLogger(__name__)
+
+# GOAL:
+# create leech handler class
+
 from re import match as re_match
 from asyncio import sleep as asyncio_sleep
 from os.path import join as os_path_join
@@ -31,13 +41,13 @@ async def progress_dl(message : Message, download : Download):
                     eta = download.eta_string(),
                     gid = download.gid
                 )
-                await message.edit_text(text)
+                await message.edit(text)
             else:
-                await message.edit_text(download.error_message)
+                await message.edit(download.error_message)
             await asyncio_sleep(1)
             await progress_dl(message, download)
         else:
-            await message.edit_text(
+            await message.edit(
                 LOCAL.ARIA2_DOWNLOAD_SUCCESS.format(
                     name=download.name
                 )
@@ -59,5 +69,6 @@ async def progress_dl(message : Message, download : Download):
             )
             return False
         else:
+            LOGGER.exception(str(e))
             await message.edit("<u>error</u> :\n<code>{}</code>".format(str(e)))
             return False
