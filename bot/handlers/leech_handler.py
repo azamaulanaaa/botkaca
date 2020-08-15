@@ -1,15 +1,18 @@
 from re import match as re_match
 from asyncio import sleep as asyncio_sleep
+from os.path import join as os_path_join
 from pyrogram import Client, Message
 from aria2p.downloads import Download
-from bot import COMMAND, LOCAL, STATUS
+from bot import COMMAND, LOCAL, STATUS, CONFIG
 from bot.plugins import aria2
 
 
 async def func(client : Client, message: Message):
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
     aria2_api = STATUS.ARIA2_API or aria2.aria2()
-    await aria2_api.start()
+    await aria2_api.start({
+        'dir' : os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
+    })
     link = message.command[1]
     if isMagnet(link):
         download = aria2_api.add_magnet(link)

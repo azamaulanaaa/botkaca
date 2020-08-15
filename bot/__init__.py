@@ -14,7 +14,8 @@ CONFIG = Config({
     'BOT_TOKEN' : -1,
     'BOT_PRIVATE' : -1,
     'BOT_PASSWORD': -1,
-    'CHAT_ID' : []
+    'CHAT_ID' : [],
+    'ARIA2_DIR' : 'downloads'
 })
 
 # GOAL:
