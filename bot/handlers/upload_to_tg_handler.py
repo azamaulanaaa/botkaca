@@ -37,7 +37,7 @@ async def func(filepath: str, message: Message, delete=False):
         upload_fn = message.reply_document
         
     await upload_fn(
-        media=filepath,
+        filepath,
         progress=progress_upload_tg,
         progress_args=(
             message,
