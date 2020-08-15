@@ -28,6 +28,10 @@ async def func(client : Client, message: Message):
     link = message.command[1]
     download = aria2_api.add_magnet(link)
     await progress_dl(reply, download)
+    for gid in download.followed_by_ids:
+        reply = message.reply(f"New download <code>{gid}</code>", quote=False)
+        await progress_dl(reply, aria2_api.get_download(gid))
+        
 
 async def progress_dl(message : Message, download : Download, previous_text=None):
     try:
