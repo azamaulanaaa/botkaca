@@ -5,6 +5,14 @@ from bot import COMMAND, LOCAL, CONFIG
 from bot.plugins import formater
 
 async def func(filepath: str, message: Message, delete=False):
+    if not os_path.exists(filepath):
+        message.edit_text(
+            LOCAL.UPLOAD_FAILED_FILE_MISSING.format(
+                name = os_path.basename(filepath)
+            )
+        )
+        return
+        
     if os_path.isdir(filepath):
         await message.delete()
         ls = os_lisdir(filepath)
