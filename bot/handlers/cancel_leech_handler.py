@@ -12,12 +12,12 @@ from pyrogram import Client, Message
 from bot import LOCAL, CONFIG, STATUS
 
 async def func(client : Client, message: Message):
-    if len(message.command()) <= 1:        
+    if message.command()[1:]:        
         try:
             await message.delete()
         except:
             pass
-        
+
     gid = message.command()[1]
     if STATUS.ARIA2_API:
         aria2_api = STATUS.ARIA2_API

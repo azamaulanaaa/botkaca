@@ -20,7 +20,7 @@ from bot.handlers import upload_to_tg_handler
 
 
 async def func(client : Client, message: Message):
-    if len(message.command()) <= 1:        
+    if message.command()[1:]:        
         try:
             await message.delete()
         except:
@@ -38,7 +38,7 @@ async def func(client : Client, message: Message):
 
     link = " ".join(message.command[1:])
     LOGGER.debug(f'Leeching : {link}')
-    
+
     download = aria2_api.add_uris([link])
     await progress_dl(reply, aria2_api, download.gid)
     download = aria2_api.get_download(download.gid)
