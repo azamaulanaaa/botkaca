@@ -38,8 +38,8 @@ class aria2(aria2p.API):
                 "aria2",
                 "--enable-rpc"
             ]
-            for key, value in self.__config:
-                cmd.append(f"{key}={value}")
+            for key in self.__config:
+                cmd.append(f"{key}={self.__config[key]}")
             LOGGER.info(dict(cmd))
             self.__process = await asyncio.create_subprocess_exec(
                 *cmd,
