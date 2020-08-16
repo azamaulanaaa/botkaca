@@ -38,24 +38,7 @@ async def func(filepath: str, message: Message, delete=False):
             os_rmdir(filepath)
         return
 
-    if os_path.getsize(filepath) > CONFIG.UPLOAD_MAX_SIZE:
-        LOGGER.error(f'File too large : {filepath}')
-        await message.edit_text(
-            LOCAL.SPLIT_FILE.format(
-                name = os_path.basename(filepath)
-            )
-        )
-        splited = await split.func(filepath, CONFIG.UPLOAD_MAX_SIZE)
-        for filepath in splited:
-            await message.edit(
-                LOCAL.UPLOADING_FILE.format(
-                    name = os_path.basename(filepath)
-                )
-            )
-            await func(filepath, message, True)
-        return
-
-    video = ['.mp4','.avi','.mkv']
+    video = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
     photo = ['.jpg','.jpeg','.png']
 
     file_ext = os_path.splitext(filepath)[1].lower()
@@ -68,13 +51,41 @@ async def func(filepath: str, message: Message, delete=False):
     LOGGER.debug(f'Uploading : {filepath}')
 
     upload_fn = None
+    split_fn = None
     if file_ext in photo:
         upload_fn = message.reply_photo
+        split_fn = split.func
     elif file_ext in video:
         upload_fn = message.reply_video
+        split_fn = split.ffmpeg
     else:
         upload_fn = message.reply_document
-
+        split_fn = split.func
+    
+    if os_path.getsize(filepath) > CONFIG.UPLOAD_MAX_SIZE:
+        LOGGER.error(f'File too large : {filepath}')
+        await message.edit_text(
+            LOCAL.SPLIT_FILE.format(
+                name = os_path.basename(filepath)
+            )
+        )
+        splited = await split_fn(filepath, CONFIG.UPLOAD_MAX_SIZE)
+        if not splited:
+            await message.edit(
+                LOCAL.SPLIT_FAILED.format(
+                    name = os_path.basename(filepath)
+                )
+            )
+            return
+        for filepath in splited:
+            await message.edit(
+                LOCAL.UPLOADING_FILE.format(
+                    name = os_path.basename(filepath)
+                )
+            )
+            await func(filepath, message, delete=True)
+        return
+    
     await upload_fn(
         filepath,
         disable_notification=True,
