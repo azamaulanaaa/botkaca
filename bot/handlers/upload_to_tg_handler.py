@@ -42,12 +42,6 @@ async def func(filepath: str, message: Message, delete=False):
     photo = ['.jpg','.jpeg','.png']
 
     file_ext = os_path.splitext(filepath)[1].lower()
-    info = {
-        "time" : time(),
-        "name" : os_path.basename(filepath),
-        "last_update" : 0,
-        "prev_text" : ""
-    }
     LOGGER.debug(f'Uploading : {filepath}')
 
     upload_fn = None
@@ -86,6 +80,12 @@ async def func(filepath: str, message: Message, delete=False):
             await func(filepath, message, delete=True)
         return False
     
+    info = {
+        "time" : time(),
+        "name" : os_path.basename(filepath),
+        "last_update" : 0,
+        "prev_text" : ""
+    }
     await upload_fn(
         filepath,
         disable_notification=True,
@@ -93,7 +93,8 @@ async def func(filepath: str, message: Message, delete=False):
         progress_args=(
             message,
             info
-        )
+        ),
+        caption=os_path.basename(filepath)
     )            
     LOGGER.debug(f'Uploaded : {filepath}')
     if delete:
