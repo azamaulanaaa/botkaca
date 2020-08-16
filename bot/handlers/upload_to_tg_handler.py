@@ -79,9 +79,8 @@ async def progress_upload_tg(current, total, message, info):
             block += "▰"
         else:
             block += "▱"
-    data_transfered = current - info["last_pos"]
     time_passed = time() - info["time"]
-    up_speed = data_transfered / time_passed
+    up_speed = current / time_passed
     text = LOCAL.UPLOADING_PROGRESS.format(
             name = info["name"],
             block = block,
@@ -93,7 +92,5 @@ async def progress_upload_tg(current, total, message, info):
     if text != info["prev_text"]:
         await message.edit(text)
     info.update({
-        "time" : time(),
-        "last_pos" : current,
         "prev_text" : text
     })
