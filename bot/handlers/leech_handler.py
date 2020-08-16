@@ -48,6 +48,7 @@ async def func(client : Client, message: Message):
                 os_path_join(dir, file.path),
                 reply
             )
+        download.remove(force=True, files=True)
     else:
         gids = download.followed_by_ids
         for gid in gids:
@@ -58,8 +59,7 @@ async def func(client : Client, message: Message):
                     os_path_join(dir, file.path),
                     reply
                 )
-            aria2_api.get_download(gid).remove(force=True, files=True)
-    download.remove(force=True, files=True)
+            download.remove(force=True, files=True)
     await reply.delete()
     
 
