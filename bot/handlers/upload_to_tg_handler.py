@@ -28,7 +28,7 @@ async def func(filepath: str, message: Message, delete=False):
     if os_path.isdir(filepath):
         ls = os_lisdir(filepath)
         for filepath in ls:
-            message = await message.reply_text(
+            await message.edit(
                 LOCAL.UPLOADING_FILE.format(
                     name = os_path.basename(filepath)
                 )
@@ -47,7 +47,7 @@ async def func(filepath: str, message: Message, delete=False):
         )
         splited = await split.func(filepath, CONFIG.UPLOAD_MAX_SIZE)
         for filepath in splited:
-            message = await message.reply_text(
+            await message.edit(
                 LOCAL.UPLOADING_FILE.format(
                     name = os_path.basename(filepath)
                 )
