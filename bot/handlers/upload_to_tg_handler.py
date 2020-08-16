@@ -47,22 +47,27 @@ async def func(filepath: str, message: Message, delete=False):
         "name" : os_path.basename(filepath)
     }
     upload_fn = None
-
+    *args = ()
     if file_ext in photo:
         upload_fn = message.reply_photo
     elif file_ext in video:
         upload_fn = message.reply_video
+        *args = (
+            supports_streaming=True
+        )
     else:
         upload_fn = message.reply_document
     
     LOGGER.debug(f'Uploading : {filepath}')
     await upload_fn(
         filepath,
+        disable_notification = True,
         progress=progress_upload_tg,
         progress_args=(
             message,
             info
-        )
+        ),
+        *args
     )
     LOGGER.debug(f'Uploaded : {filepath}')
     if delete:
