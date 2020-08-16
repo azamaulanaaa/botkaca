@@ -16,7 +16,7 @@ class Config:
 
     def __getattr__(self, name):
         if name in self.__list:
-            return self.__list[name]
+            return self.__evar(name, self.__list[name])
         raise AttributeError
 
     def __evar(self, name: str, default=None, should_prompt=False):
