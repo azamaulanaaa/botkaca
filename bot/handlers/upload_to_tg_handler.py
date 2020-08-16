@@ -62,14 +62,14 @@ async def func(filepath: str, message: Message, delete=False):
         upload_fn = message.reply_document
         split_fn = split.func
     
-    if os_path.getsize(filepath) > CONFIG.UPLOAD_MAX_SIZE:
+    if os_path.getsize(filepath) > int(CONFIG.UPLOAD_MAX_SIZE):
         LOGGER.warning(f'File too large : {filepath}')
         await message.edit_text(
             LOCAL.SPLIT_FILE.format(
                 name = os_path.basename(filepath)
             )
         )
-        splited = await split_fn(filepath, CONFIG.UPLOAD_MAX_SIZE)
+        splited = await split_fn(filepath, int(CONFIG.UPLOAD_MAX_SIZE))
         if not splited:
             await message.edit(
                 LOCAL.SPLIT_FAILED.format(
