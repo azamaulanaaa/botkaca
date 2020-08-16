@@ -97,11 +97,7 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
             )
     except Exception as e:
         if " not found" in str(e) or "'file'" in str(e):
-            await message.edit(
-                LOCAL.ARIA2_DOWNLOAD_CANCELED.format(
-                    name = download.name
-                )
-            )
+            await message.delete()
             return False
         elif " depth exceeded" in str(e):
             download.remove(force=True)
