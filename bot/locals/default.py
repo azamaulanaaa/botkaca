@@ -13,7 +13,7 @@ LOCAL = Local({
     'UPLOADING_FILE' : 'Uploading : <code>{name}</code>',
     'UPLOADING_PROGRESS' : 'Uploading : <code>{name}</code>\n{block}\nSize : {size}\nUP : {upload_speed}/s\nETA : {eta}',
     'UPLOAD_FAILED_FILE_MISSING' : 'Upload : Failed. file not found.\n<code>{name}</code>',
-    'UPLOAD_EXCIDED_MAX_SIZE' : 'Upload : Failed. file too large.\n<code>{name}</code>',
+    'SPLIT_FILE' : 'Spliting : <code>{name}</code>',
     'COMMAND_START' : 'start bot',
     'COMMAND_PASSWORD' : 'enter password that required',
     'COMMAND_HELP' : 'this message',

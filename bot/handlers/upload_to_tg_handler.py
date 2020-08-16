@@ -13,7 +13,7 @@ from time import time
 from math import floor
 from pyrogram import Message
 from bot import LOCAL, CONFIG
-from bot.plugins import formater
+from bot.plugins import formater, split
 
 async def func(filepath: str, message: Message, delete=False):
     if not os_path.exists(filepath):
@@ -30,7 +30,7 @@ async def func(filepath: str, message: Message, delete=False):
         for filepath in ls:
             message = await message.reply_text(
                 LOCAL.UPLOADING_FILE.format(
-                    name = os_path.basename
+                    name = os_path.basename(filepath)
                 )
             )
             await func(filepath, message, delete)
@@ -41,10 +41,18 @@ async def func(filepath: str, message: Message, delete=False):
     if os_path.getsize(filepath) > CONFIG.UPLOAD_MAX_SIZE:
         LOGGER.error(f'File too large : {filepath}')
         await message.edit_text(
-            LOCAL.UPLOAD_EXCIDED_MAX_SIZE.format(
+            LOCAL.SPLIT_FILE.format(
                 name = os_path.basename(filepath)
             )
         )
+        splited = await split.func(filepath, CONFIG.UPLOAD_MAX_SIZE)
+        for filepath in splited:
+            message = await message.reply_text(
+                LOCAL.UPLOADING_FILE.format(
+                    name = os_path.basename(filepath)
+                )
+            )
+            await func(filepath, message, True)
         return
 
     video = ['.mp4','.avi','.mkv']
