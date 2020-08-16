@@ -19,7 +19,7 @@ async def func(filepath, size):
     cmd = [
         "split",
         "--numeric-suffixes=1",
-        "--suffix-length=5",
+        "--suffix-length=3",
         f"--bytes={size}",
         filepath,
         filepath + "."
