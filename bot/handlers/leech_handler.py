@@ -44,7 +44,7 @@ async def func(client : Client, message: Message):
     download = aria2_api.get_download(download.gid)
     if not download.followed_by_ids:
         for file in download.files:
-            await upload_to_tg_handler.func(
+            upload_status = await upload_to_tg_handler.func(
                 os_path_join(dir, file.path),
                 reply
             )
@@ -55,12 +55,13 @@ async def func(client : Client, message: Message):
             await progress_dl(reply, aria2_api, gid)
             download = aria2_api.get_download(gid)
             for file in download.files:
-                await upload_to_tg_handler.func(
+                upload_status = await upload_to_tg_handler.func(
                     os_path_join(dir, file.path),
                     reply
                 )
             download.remove(force=True, files=True)
-    await reply.delete()
+    if not upload_status:
+        await reply.delete()
     
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):

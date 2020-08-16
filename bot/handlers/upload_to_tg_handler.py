@@ -84,7 +84,7 @@ async def func(filepath: str, message: Message, delete=False):
                 )
             )
             await func(filepath, message, delete=True)
-        return
+        return False
     
     await upload_fn(
         filepath,
