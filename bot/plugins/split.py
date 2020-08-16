@@ -63,12 +63,13 @@ async def ffmpeg(filepath, size):
         out_file = file_path_name + ".{:03d}".format(i) + file_ext
         cmd = [
             "ffmpeg",
+            "-hide_banner",
             "-i",
             filepath,
             "-ss",
-            splited_duration,
+            str(splited_duration),
             "-fs",
-            size,
+            str(size),
             "-c",
             "copy",
             out_file
