@@ -49,7 +49,7 @@ async def func(filepath: str, message: Message, delete=False):
     LOGGER.debug(f'Uploading : {filepath}')
 
     if file_ext in photo:
-        message.reply_photo(
+        await message.reply_photo(
             filepath,
             disable_notification=True,
             progress=progress_upload_tg,
@@ -59,7 +59,7 @@ async def func(filepath: str, message: Message, delete=False):
             )
         )
     elif file_ext in video:
-        message.reply_video(       
+        await message.reply_video(       
             filepath,
             disable_notification=True,
             progress=progress_upload_tg,
@@ -70,7 +70,7 @@ async def func(filepath: str, message: Message, delete=False):
             supports_streaming=True
         )
     else:
-        message.reply_document(
+        await message.reply_document(
             filepath,
             disable_notification=True,
             progress=progress_upload_tg,
