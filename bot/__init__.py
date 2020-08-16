@@ -15,6 +15,7 @@ CONFIG = Config({
     'BOT_PRIVATE' : -1,
     'BOT_PASSWORD': -1,
     'CHAT_ID' : [],
+    'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
     'ARIA2_DIR' : 'downloads'
 })
 

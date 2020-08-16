@@ -38,6 +38,15 @@ async def func(filepath: str, message: Message, delete=False):
             os_rmdir(filepath)
         return
 
+    if os_path.getsize(filepath) > CONFIG.UPLOAD_MAX_SIZE:
+        LOGGER.error(f'File too large : {filepath}')
+        await message.edit_text(
+            LOCAL.UPLOAD_EXCIDED_MAX_SIZE.format(
+                name = os_path.basename(filepath)
+            )
+        )
+        return
+
     video = ['.mp4','.avi','.mkv']
     photo = ['.jpg','.jpeg','.png']
 
