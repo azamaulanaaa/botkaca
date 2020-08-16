@@ -90,8 +90,6 @@ async def progress_upload_tg(current, total, message, info):
             eta = formater.format_time((total - current)/up_speed)
         )
     )
-    info.dischard("time")
-    info.dischard("las_pos")
     info.update({
         "time" : time(),
         "las_pos" : current
