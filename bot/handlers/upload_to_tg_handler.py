@@ -11,7 +11,6 @@ LOGGER = logging.getLogger(__name__)
 from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir as os_rmdir
 from time import time
 from math import floor
-from asyncio import sleep as asyncio_sleep
 from pyrogram import Message
 from bot import LOCAL, CONFIG
 from bot.plugins import formater
@@ -46,7 +45,7 @@ async def func(filepath: str, message: Message, delete=False):
     info = {
         "time" : time(),
         "name" : os_path.basename(filepath),
-        "last_pos" : 0,
+        "last_update" : 0,
         "prev_text" : ""
     }
     LOGGER.debug(f'Uploading : {filepath}')
@@ -89,9 +88,9 @@ async def progress_upload_tg(current, total, message, info):
             upload_speed = formater.format_bytes(up_speed),
             eta = formater.format_time((total - current)/up_speed)
         )
-    if text != info["prev_text"]:
+    if text != info["prev_text"] and (time() - info["last_update"]) >= 3:
         await message.edit(text)
     info.update({
-        "prev_text" : text
+        "prev_text" : text,
+        "last_update" : time()
     })
-    await asyncio_sleep(3)
