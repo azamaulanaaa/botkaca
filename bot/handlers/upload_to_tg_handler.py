@@ -11,6 +11,7 @@ LOGGER = logging.getLogger(__name__)
 from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir as os_rmdir
 from time import time
 from math import floor
+from asyncio import sleep as asyncio_sleep
 from pyrogram import Message
 from bot import LOCAL, CONFIG
 from bot.plugins import formater
@@ -93,3 +94,4 @@ async def progress_upload_tg(current, total, message, info):
     info.update({
         "prev_text" : text
     })
+    await asyncio_sleep(3)
