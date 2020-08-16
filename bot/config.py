@@ -12,11 +12,13 @@ class Config:
         for key in custom:
             if custom[key] == -1:
                 custom[key] = self.__evar(key, should_prompt=True)
+            else:
+                custom[key] = self.__evar(key, custom[key])
         self.__list.update(custom)
 
     def __getattr__(self, name):
         if name in self.__list:
-            return self.__evar(name, self.__list[name])
+            return self.__list[name]
         raise AttributeError
 
     def __evar(self, name: str, default=None, should_prompt=False):
