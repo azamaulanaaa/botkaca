@@ -105,7 +105,7 @@ async def progress_upload_tg(current, total, message, info):
             upload_speed = formater.format_bytes(up_speed),
             eta = formater.format_time((total - current)/up_speed)
         )
-    if text != info["prev_text"] and (time() - info["last_update"]) >= 3:
+    if text != info["prev_text"] and (time() - info["last_update"]) >= int(CONFIG.EDIT_SLEEP):
         await message.edit(text)
         info.update({
             "prev_text" : text,
