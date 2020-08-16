@@ -46,23 +46,39 @@ async def func(filepath: str, message: Message, delete=False):
         "start_time" : time(),
         "name" : os_path.basename(filepath)
     }
-    *args = (
-        filepath,
-        disable_notification = True,
-        progress=progress_upload_tg,
-        progress_args=(
-            message,
-            info
-        )
-    )
     LOGGER.debug(f'Uploading : {filepath}')
-    
+
     if file_ext in photo:
-        message.reply_photo(*args)
+        message.reply_photo(
+            filepath,
+            disable_notification=True,
+            progress=progress_upload_tg,
+            progress_args=(
+                message,
+                info
+            )
+        )
     elif file_ext in video:
-        message.reply_video(*args, supports_streaming=True)
+        message.reply_video(       
+            filepath,
+            disable_notification=True,
+            progress=progress_upload_tg,
+            progress_args=(
+                message,
+                info
+            ),
+            supports_streaming=True
+        )
     else:
-        message.reply_document(*args)
+        message.reply_document(
+            filepath,
+            disable_notification=True,
+            progress=progress_upload_tg,
+            progress_args=(
+                message,
+                info
+            )
+        )
     
     LOGGER.debug(f'Uploaded : {filepath}')
     if delete:
