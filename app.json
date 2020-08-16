@@ -3,23 +3,21 @@
     "description": "A Telegram Torrent Leecher based on Pyrogram",
     "keywords": [
       "telegram",
-      "best",
       "pyrogram",
       "torrent",
       "3",
       "productivity",
       "leecher"
     ],
-    "website": "",
-    "repository": "",
-    "logo": "",
+    "website": "https://github.com/azamaulanaaa/botkaca",
+    "repository": "https://github.com/azamaulanaaa/botkaca",
     "env": {
-      "APP_ID": {
-        "description": "Get this value from https://my.telegram.org",
+      "API_ID": {
+        "description": "get this value from https://my.telegram.org",
         "value": ""
       },
       "API_HASH": {
-        "description": "Get this value from https://my.telegram.org",
+        "description": "get this value from https://my.telegram.org",
         "value": ""
       },
       "BOT_TOKEN": {
