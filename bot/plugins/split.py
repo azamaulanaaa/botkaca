@@ -70,6 +70,8 @@ async def ffmpeg(filepath, size):
             str(splited_duration),
             "-fs",
             str(size),
+            "-async",
+            "1",
             "-c",
             "copy",
             out_file
