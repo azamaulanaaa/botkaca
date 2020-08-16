@@ -93,9 +93,9 @@ async def progress_upload_tg(current, total, message, info):
     block = ""
     for i in range(1, 11):
         if i <= floor(percentage/10):
-            block += "▰"
+            block += LOCAL.BLOCK_FILLED
         else:
-            block += "▱"
+            block += LOCAL.BLOCK_EMPTY
     time_passed = time() - info["time"]
     up_speed = current / time_passed
     text = LOCAL.UPLOADING_PROGRESS.format(

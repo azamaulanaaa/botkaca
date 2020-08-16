@@ -71,9 +71,9 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
                 block = ""
                 for i in range(1, 11):
                     if i <= floor(download.progress/10):
-                        block += "▰"
+                        block += LOCAL.BLOCK_FILLED
                     else:
-                        block += "▱"
+                        block += LOCAL.BLOCK_EMPTY
                 text = LOCAL.ARIA2_DOWNLOAD_STATUS.format(
                     name = download.name,
                     block = block,

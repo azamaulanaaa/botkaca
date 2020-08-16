@@ -18,5 +18,7 @@ LOCAL = Local({
     'COMMAND_PASSWORD' : 'enter password that required',
     'COMMAND_HELP' : 'this message',
     'COMMAND_LEECH' : 'leech link or magnet',
-    'COMMAND_CANCEL_LEECH' : 'cancel leeching' 
+    'COMMAND_CANCEL_LEECH' : 'cancel leeching',
+    'BLOCK_EMPTY' : "▱",
+    "BLOCK_FILLED" : "▰"
 })
