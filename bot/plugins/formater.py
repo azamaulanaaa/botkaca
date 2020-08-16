@@ -13,14 +13,13 @@ def format_bytes(bytes):
 
 def format_time(sec):
     units = [
-        ['ms', 1000],
         ['s', 60],
         ['m', 60],
         ['h', 24],
         ['d', 0]
     ]
     out = ''
-    qtime = int(sec * 1000)
+    qtime = int(sec)
     for unit in units:
         if unit[1] != 0:
             qtime, time = divmod(qtime, unit[1])
