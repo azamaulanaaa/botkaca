@@ -47,12 +47,12 @@ async def func(filepath: str, message: Message, delete=False):
         "name" : os_path.basename(filepath)
     }
     upload_fn = None
-    *args = ()
+    args = tuple()
     if file_ext in photo:
         upload_fn = message.reply_photo
     elif file_ext in video:
         upload_fn = message.reply_video
-        *args = (
+        args = tuple(
             supports_streaming=True
         )
     else:
