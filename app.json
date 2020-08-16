@@ -1,0 +1,46 @@
+{
+    "name": "Telegram Torrent Leecher",
+    "description": "A Telegram Torrent Leecher based on Pyrogram",
+    "keywords": [
+      "telegram",
+      "best",
+      "pyrogram",
+      "torrent",
+      "3",
+      "productivity",
+      "leecher"
+    ],
+    "website": "",
+    "repository": "",
+    "logo": "",
+    "env": {
+      "APP_ID": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": ""
+      },
+      "API_HASH": {
+        "description": "Get this value from https://my.telegram.org",
+        "value": ""
+      },
+      "BOT_TOKEN": {
+        "description": "get this value from @BotFather",
+        "value": ""
+      },
+      "BOT_PRIVATE": {
+        "description": "Set 0 to disable, 1 to enable",
+        "value": ""
+      },
+      "BOT_PASSWORD": {
+        "description": "password to use your bot",
+        "value": ""
+      }
+    },
+    "stack": "container",
+    "formation": {
+      "worker": {
+        "quantity": 1,
+        "size": "free"
+      }
+    }
+  }
+  
