@@ -90,7 +90,7 @@ async def progress_upload_tg(current, total, message, info):
         )
     if text != info["prev_text"] and (time() - info["last_update"]) >= 3:
         await message.edit(text)
-    info.update({
-        "prev_text" : text,
-        "last_update" : time()
-    })
+        info.update({
+            "prev_text" : text,
+            "last_update" : time()
+        })
