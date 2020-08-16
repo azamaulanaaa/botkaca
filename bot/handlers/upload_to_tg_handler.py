@@ -84,7 +84,6 @@ async def progress_upload_tg(current, total, message, info):
     text = LOCAL.UPLOADING_PROGRESS.format(
             name = info["name"],
             block = block,
-            percentage = f"{percentage}%",
             size = formater.format_bytes(total),
             upload_speed = formater.format_bytes(up_speed),
             eta = formater.format_time((total - current)/up_speed)
