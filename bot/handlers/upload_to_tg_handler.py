@@ -45,7 +45,8 @@ async def func(filepath: str, message: Message, delete=False):
     info = {
         "time" : time(),
         "name" : os_path.basename(filepath),
-        "las_pos" : 0
+        "last_pos" : 0,
+        "prev_text" : ""
     }
     LOGGER.debug(f'Uploading : {filepath}')
 
@@ -78,11 +79,10 @@ async def progress_upload_tg(current, total, message, info):
             block += "▰"
         else:
             block += "▱"
-    data_transfered = current - info["las_pos"]
+    data_transfered = current - info["last_pos"]
     time_passed = time() - info["time"]
     up_speed = data_transfered / time_passed
-    await message.edit(
-        LOCAL.UPLOADING_PROGRESS.format(
+    text = LOCAL.UPLOADING_PROGRESS.format(
             name = info["name"],
             block = block,
             percentage = f"{percentage}%",
@@ -90,8 +90,10 @@ async def progress_upload_tg(current, total, message, info):
             upload_speed = formater.format_bytes(up_speed),
             eta = formater.format_time((total - current)/up_speed)
         )
-    )
+    if text != info["prev_text"]:
+        await message.edit(text)
     info.update({
         "time" : time(),
-        "las_pos" : current
+        "last_pos" : current,
+        "prev_text" : text
     })
