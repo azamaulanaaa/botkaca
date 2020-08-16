@@ -35,7 +35,7 @@ async def func(filepath, size):
     )
     await process.communicate()
 
-    list = glob(filepath + ".*")
+    list = glob(filepath + ".*").sort()
     LOGGER.debug(list)
     return list
 
