@@ -88,7 +88,7 @@ async def ffmpeg(filepath, size):
         metadata = extractMetadata(createParser(out_file))
         if not metadata.has("duration"):
             os_remove(out_file)
-            return False
+            yield False
         splited_duration += metadata.get("duration").seconds
         
         yield out_file
