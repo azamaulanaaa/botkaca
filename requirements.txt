@@ -1,4 +1,4 @@
 git+git://github.com/pyrogram/pyrogram@asyncio-dev#pyrogram
 tgcrypto
 aria2p
-hachoir
+ffmpeg-python

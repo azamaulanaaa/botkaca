@@ -51,7 +51,7 @@ async def func(filepath: str, message: Message, delete=False):
         split_fn = split.func
     elif file_ext in video:
         upload_fn = message.reply_video
-        split_fn = split.ffmpeg
+        split_fn = split.video
     else:
         upload_fn = message.reply_document
         split_fn = split.func

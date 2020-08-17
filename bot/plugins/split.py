@@ -11,8 +11,7 @@ LOGGER = logging.getLogger(__name__)
 from os import path as os_path, remove as os_remove
 import asyncio
 from glob import glob
-from hachoir.metadata import extractMetadata
-from hachoir.parser import createParser
+import ffmpeg
 
 async def func(filepath, size):
     if not os_path.isfile(filepath):
@@ -39,7 +38,7 @@ async def func(filepath, size):
     LOGGER.debug(list)
     return list
 
-async def ffmpeg(filepath, size):
+async def video(filepath, size):
     supported = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
     if not os_path.isfile(filepath):
         yield False
@@ -48,47 +47,27 @@ async def ffmpeg(filepath, size):
     if not file_ext in supported:
         yield False
 
-    metadata = extractMetadata(createParser(filepath))
-    if not metadata.has("duration"):
-        yield False
-
-    total_duration = metadata.get("duration").seconds
+    probe = ffmpeg.probe(filepath)
+    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+    duration = video_stream["duration"]
 
     splited_duration = 0
     i = 0
 
-    while splited_duration < total_duration:    
+    while splited_duration < duration:    
         i+=1
         out_file = file_path_name + ".{:03d}".format(i) + file_ext
-        cmd = [
-            "ffmpeg",
-            "-hide_banner",
-            "-i",
-            filepath,
-            "-ss",
-            str(splited_duration),
-            "-fs",
-            str(size * 9/10),
-            "-async",
-            "1",
-            "-c",
-            "copy",
-            out_file
-        ]
-        LOGGER.debug(cmd)
-
-        process = await asyncio.create_subprocess_exec(
-            *cmd,
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE,
+        stream = ffmpeg.input(filepath).output(out_file,
+            fs = str(size * 9/10),
+            c = "copy",
+            ss = str(splited_duration)
         )
+        process = await ffmpeg.run_async(stream)
         await process.communicate()
         
+        probe = ffmpeg.probe(filepath)
+        video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
-        metadata = extractMetadata(createParser(out_file))
-        if not metadata.has("duration"):
-            os_remove(out_file)
-            yield False
-        splited_duration += metadata.get("duration").seconds
+        splited_duration += video_stream["duration"]
         
         yield out_file
