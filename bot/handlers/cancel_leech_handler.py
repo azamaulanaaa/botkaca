@@ -26,7 +26,7 @@ async def func(client : Client, data : Union[Message, CallbackQuery]):
             return False
         update_fn = data.reply_text
     elif type(data) is CallbackQuery:
-        text = data.query
+        text = data.data
         gid = " ".join(text.split(" ")[1:])
         if not gid:
             return False
