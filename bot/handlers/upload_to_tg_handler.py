@@ -57,7 +57,7 @@ async def func(filepath: str, message: Message, delete=False):
         duration = int(float(video_stream["duration"])) or 0
         width = int(video_stream['width']) or 0
         height = int(video_stream['height']) or 0
-        thumbnail = thumbnail_video.func(filepath)
+        thumbnail = await thumbnail_video.func(filepath)
 
         async def upload_fn(file, **kwargs):
             return await message.reply_video(
