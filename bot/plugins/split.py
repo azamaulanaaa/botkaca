@@ -56,7 +56,6 @@ async def ffmpeg(filepath, size):
 
     splited_duration = 0
     i = 0
-    list = []
 
     while splited_duration < total_duration:    
         i+=1
@@ -84,15 +83,12 @@ async def ffmpeg(filepath, size):
             stderr=asyncio.subprocess.PIPE,
         )
         await process.communicate()
-        list.append(out_file)
         
 
         metadata = extractMetadata(createParser(out_file))
         if not metadata.has("duration"):
-            for file in list:
-                os_remove(file)
+            os_remove(out_file)
             return False
         splited_duration += metadata.get("duration").seconds
-
-    LOGGER.debug(list)
-    return list
+        
+        yield out_file
