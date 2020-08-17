@@ -60,7 +60,7 @@ async def func(filepath: str, message: Message, delete=False):
 
         thumbnail = thumbnail_video.func(filepath)
 
-        async def upload_fn(file, **kwargs)
+        async def upload_fn(file, **kwargs):
             return await message.reply_video(
                 file, 
                 supports_streaming=True,
