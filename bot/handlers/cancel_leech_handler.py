@@ -10,8 +10,9 @@ LOGGER = logging.getLogger(__name__)
 
 from pyrogram import Client, Message, CallbackQuery
 from bot import LOCAL, CONFIG, STATUS
+from typing import Union
 
-async def func(client : Client, data: Message | CallbackQuery):
+async def func(client : Client, data : Union[Message, CallbackQuery]):
     gid = ""
     update_fn = None
     if type(data) is Message:
