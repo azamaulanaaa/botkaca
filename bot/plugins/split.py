@@ -41,11 +41,11 @@ async def func(filepath, size):
 async def video(filepath, size):
     supported = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
     if not os_path.isfile(filepath):
-        yield False
+        return False
     
     file_path_name, file_ext = os_path.splitext(filepath)
     if not file_ext in supported:
-        yield False
+        return False
 
     probe = ffmpeg.probe(filepath)
     video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
@@ -53,7 +53,7 @@ async def video(filepath, size):
 
     splited_duration = 0
     i = 0
-
+    list = []
     while splited_duration < duration:    
         i+=1
         out_file = file_path_name + ".{:03d}".format(i) + file_ext
@@ -62,6 +62,7 @@ async def video(filepath, size):
             c = "copy",
             ss = str(splited_duration)
         )
+        LOGGER.debug("Spliting : " + out_file)
         process = await ffmpeg.run_async(stream)
         await process.communicate()
         
@@ -70,4 +71,7 @@ async def video(filepath, size):
 
         splited_duration += video_stream["duration"]
         
-        yield out_file
+        list.append(out_file)
+    
+    LOGGER.debug(list)
+    return list
