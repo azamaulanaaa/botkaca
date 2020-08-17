@@ -58,14 +58,13 @@ async def video(filepath, size):
         i+=1
         out_file = file_path_name + ".{:03d}".format(i) + file_ext
         stream = ffmpeg.input(filepath).output(out_file,
-            fs = str(size * 9/10),
+            fs = str(size * 99/100),
             c = "copy",
             ss = str(splited_duration)
         )
         LOGGER.debug("Spliting : " + out_file)
-        process = await ffmpeg.run_async(stream)
-        await process.communicate()
-        
+        ffmpeg.run(stream, quiet = True )
+    
         probe = ffmpeg.probe(filepath)
         video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
