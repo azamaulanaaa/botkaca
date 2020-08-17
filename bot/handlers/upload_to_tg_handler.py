@@ -45,7 +45,6 @@ async def func(filepath: str, message: Message, delete=False):
     file_ext = os_path.splitext(filepath)[1].lower()
     LOGGER.debug(f'Uploading : {filepath}')
 
-    upload_fn = None
     split_fn = None
     if file_ext in photo:
         upload_fn = message.reply_photo
@@ -60,15 +59,17 @@ async def func(filepath: str, message: Message, delete=False):
         height = int(video_stream['height']) or 0
 
         thumbnail = thumbnail_video.func(filepath)
-        upload_fn = lambda file, **kwargs: await message.reply_video(
-            file, 
-            supports_streaming=True,
-            thumb=thumbnail,
-            height=height,
-            width=width,
-            duration=duration,
-            **kwargs
-        )
+
+        await upload_fn(file, **kwargs)
+            return await message.reply_video(
+                file, 
+                supports_streaming=True,
+                thumb=thumbnail,
+                height=height,
+                width=width,
+                duration=duration,
+                **kwargs
+            )
     else:
         upload_fn = message.reply_document
         split_fn = split.func
