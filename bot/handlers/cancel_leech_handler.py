@@ -11,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 from pyrogram import Client, Message, CallbackQuery
 from bot import LOCAL, CONFIG, STATUS
 
-async def func(client : Client, data: Message or CallbackQuery):
+async def func(client : Client, data: Message | CallbackQuery):
     gid = ""
     update_fn = None
     if type(data) is Message:
@@ -29,7 +29,7 @@ async def func(client : Client, data: Message or CallbackQuery):
         gid = " ".join(text.split(" ")[1:])
         if not gid:
             return False
-        update_fn = data.edit_message_text
+        update_fn = data.message.reply_text
     else:
         return False
     

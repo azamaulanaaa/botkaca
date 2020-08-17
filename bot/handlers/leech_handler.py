@@ -40,15 +40,6 @@ async def func(client : Client, message: Message):
     LOGGER.debug(f'Leeching : {link}')
 
     download = aria2_api.add_uris([link])
-    await reply.edit_reply_markup(
-        InlineKeyboardMarkup([[
-            InlineKeyboardButton(
-                COMMAND.CANCEL_LEECH,
-                callback_data=COMMAND.CANCEL_LEECH + " " + download.gid,
-                
-            )
-        ]])
-    )
     await progress_dl(reply, aria2_api, download.gid)
     download = aria2_api.get_download(download.gid)
     if not download.followed_by_ids:
@@ -94,7 +85,17 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
                     gid = download.gid
                 )
                 if text != previous_text:
-                    await message.edit(text)
+                    await message.edit(
+                        text,
+                        reply_markup=
+                            InlineKeyboardMarkup([[
+                                InlineKeyboardButton(
+                                    COMMAND.CANCEL_LEECH,
+                                    callback_data=COMMAND.CANCEL_LEECH + " " + download.gid,
+                                    
+                                )
+                            ]])
+                    )
             else:
                 await message.edit(download.error_message)
             await asyncio_sleep(int(CONFIG.EDIT_SLEEP))
