@@ -1,5 +1,5 @@
 from os.path import join as os_path_join
-from pyrogram import Client, Message, MessageHandler, Filters
+from pyrogram import Client, Message, MessageHandler, Filters, CallbackQueryHandler
 from bot import CONFIG, COMMAND, LOCAL, LOGGER
 from bot.handlers import (
     start_message_handler,
@@ -68,6 +68,13 @@ app.add_handler(
     MessageHandler(
         cancel_leech_handler.func,
         filters=Filters.command(COMMAND.CANCEL_LEECH)
+    )
+)
+
+app.add_handler(
+    CallbackQueryHandler(
+        cancel_leech_handler.func,
+        filters=lambda query: query.data.startwith(COMMAND.CANCEL_LEECH)
     )
 )
 

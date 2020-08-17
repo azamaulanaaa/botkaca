@@ -12,12 +12,12 @@ from re import match as re_match
 from asyncio import sleep as asyncio_sleep
 from os.path import join as os_path_join
 from math import floor
-from pyrogram import Client, Message
+from pyrogram import Client, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from aria2p.downloads import Download, File
-from bot import LOCAL, STATUS, CONFIG
+from bot import LOCAL, STATUS, CONFIG, COMMAND
 from bot.plugins import aria2
 from bot.handlers import upload_to_tg_handler
-
+from bot.handlers import cancel_leech_handler
 
 async def func(client : Client, message: Message):
     if len(message.command) <= 1:        
@@ -40,6 +40,15 @@ async def func(client : Client, message: Message):
     LOGGER.debug(f'Leeching : {link}')
 
     download = aria2_api.add_uris([link])
+    await reply.edit_reply_markup(
+        InlineKeyboardMarkup([[
+            InlineKeyboardButton(
+                COMMAND.CANCEL_LEECH,
+                callback_data=COMMAND.CANCEL_LEECH + " " + download.gid,
+                
+            )
+        ]])
+    )
     await progress_dl(reply, aria2_api, download.gid)
     download = aria2_api.get_download(download.gid)
     if not download.followed_by_ids:

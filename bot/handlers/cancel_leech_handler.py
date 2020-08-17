@@ -8,33 +8,48 @@ LOGGER = logging.getLogger(__name__)
 # GOAL:
 # create /cancel handler
 
-from pyrogram import Client, Message
+from pyrogram import Client, Message, CallbackQuery
 from bot import LOCAL, CONFIG, STATUS
 
-async def func(client : Client, message: Message):
-    if len(message.command) <= 1:        
-        try:
-            await message.delete()
-        except:
-            pass
-
-    gid = message.command[1]
+async def func(client : Client, data: Message or CallbackQuery):
+    gid = ""
+    update_fn = None
+    if type(data) is Message:
+        text = data.text
+        gid = " ".join(text.split(" ")[1:])
+        if not gid:               
+            try:
+                await data.delete()
+            except:
+                pass
+            return False
+        update_fn = data.reply_text
+    elif type(data) is CallbackQuery:
+        text = data.query
+        gid = " ".join(text.split(" ")[1:])
+        if not gid:
+            return False
+        update_fn = data.edit_message_text
+    else:
+        return False
+    
     if STATUS.ARIA2_API:
         aria2_api = STATUS.ARIA2_API
         try:
             download = aria2_api.get_download(gid)
             download.remove(force=True, files=True)
             LOGGER.debug(f'Cancel upload : {download.name}')
-            await message.reply_text(
+            await update_fn(
                 LOCAL.ARIA2_DOWNLOAD_CANCELED.format(
                     name = download.name
                 )
             )
         except Exception as e:
             LOGGER.warn(str(e))
-            await message.reply_text(str(e))
+            await update_fn(str(e))
     else:
-        try:
-            await message.delete()
-        except:
-            pass
+        if type(data) is Message:
+            try:
+                await data.delete()
+            except:
+                pass
