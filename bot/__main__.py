@@ -74,7 +74,7 @@ app.add_handler(
 app.add_handler(
     CallbackQueryHandler(
         cancel_leech_handler.func,
-        filters=lambda query: query.data.startwith(COMMAND.CANCEL_LEECH)
+        filters=lambda query: query.data.startswith(COMMAND.CANCEL_LEECH)
     )
 )
 
