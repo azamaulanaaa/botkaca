@@ -24,7 +24,7 @@ async def func(filepath):
         "-i",
         filepath,
         '-vf',
-        '"thumbnail,scale=320:-1"',
+        'thumbnail,scale=320:-1',
         '-frames:v',
         '1',
         out_file
