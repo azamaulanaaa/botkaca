@@ -66,6 +66,7 @@ async def func(filepath: str, message: Message, delete=False):
             thumb=thumbnail,
             height=height,
             width=width,
+            duration=duration,
             **kwargs
         )
     else:
