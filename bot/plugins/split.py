@@ -42,15 +42,15 @@ async def func(filepath, size):
 async def ffmpeg(filepath, size):
     supported = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
     if not os_path.isfile(filepath):
-        return False
+        yield False
     
     file_path_name, file_ext = os_path.splitext(filepath)
     if not file_ext in supported:
-        return False
+        yield False
 
     metadata = extractMetadata(createParser(filepath))
     if not metadata.has("duration"):
-        return False
+        yield False
 
     total_duration = metadata.get("duration").seconds
 
