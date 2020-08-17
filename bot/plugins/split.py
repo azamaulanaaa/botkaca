@@ -65,7 +65,7 @@ async def video(filepath, size):
         LOGGER.debug("Spliting : " + out_file)
         ffmpeg.run(stream, quiet = True )
     
-        probe = ffmpeg.probe(filepath)
+        probe = ffmpeg.probe(out_file)
         video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
         splited_duration += float(video_stream["duration"])
