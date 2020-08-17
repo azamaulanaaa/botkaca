@@ -12,8 +12,9 @@ from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir
 from time import time
 from math import floor
 from pyrogram import Message
+import ffmpeg
 from bot import LOCAL, CONFIG
-from bot.plugins import formater, split
+from bot.plugins import formater, split, thumbnail_video
 
 async def func(filepath: str, message: Message, delete=False):
     if not os_path.exists(filepath):
@@ -50,8 +51,23 @@ async def func(filepath: str, message: Message, delete=False):
         upload_fn = message.reply_photo
         split_fn = split.func
     elif file_ext in video:
-        upload_fn = message.reply_video
         split_fn = split.video
+
+        probe = ffmpeg.probe(filepath)
+        video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+        duration = int(float(video_stream["duration"])) or 0
+        width = int(video_stream['width']) or 0
+        height = int(video_stream['height']) or 0
+
+        thumbnail = thumbnail_video.func(filepath)\
+        upload_fn = async lambda file, **kwargs: await message.reply_video(
+            file, 
+            supports_streaming=True,
+            thumb=thumbnail,
+            height=height,
+            width=width,
+            **kwargs
+        )
     else:
         upload_fn = message.reply_document
         split_fn = split.func
@@ -98,6 +114,8 @@ async def func(filepath: str, message: Message, delete=False):
     )            
     LOGGER.debug(f'Uploaded : {filepath}')
     if delete:
+        if thumbnail:
+            os_remove(thumbnail)
         os_remove(filepath)
 
 async def progress_upload_tg(current, total, message, info):
