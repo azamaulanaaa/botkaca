@@ -57,13 +57,30 @@ async def video(filepath, size):
     while splited_duration < duration:    
         i+=1
         out_file = file_path_name + ".{:03d}".format(i) + file_ext
-        stream = ffmpeg.input(filepath).output(out_file,
-            fs = str(size * 99/100),
-            c = "copy",
-            ss = str(splited_duration)
+        
+        cmd = [
+            "ffmpeg",
+            "-hide_banner",
+            "-i",
+            filepath,
+            '-ss',
+            str(splited_duration),
+            '-fs',
+            str(size * 99/100),
+            '-c',
+            'copy',
+            '-async',
+            '1',
+            out_file
+        ]
+        LOGGER.debug(cmd)
+
+        process = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
         )
-        LOGGER.debug("Spliting : " + out_file)
-        ffmpeg.run(stream, quiet = True )
+        await process.communicate()
     
         probe = ffmpeg.probe(out_file)
         video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
