@@ -63,7 +63,7 @@ async def func(filepath: str, message: Message, delete=False):
             return await message.reply_video(
                 file, 
                 supports_streaming=True,
-                thumb=thumbnail,
+                thumb=str(thumbnail) or None,
                 height=height,
                 width=width,
                 duration=duration,
