@@ -60,7 +60,7 @@ async def func(filepath: str, message: Message, delete=False):
         height = int(video_stream['height']) or 0
 
         thumbnail = thumbnail_video.func(filepath)
-        upload_fn = async lambda file, **kwargs: await message.reply_video(
+        upload_fn = lambda file, **kwargs: await message.reply_video(
             file, 
             supports_streaming=True,
             thumb=thumbnail,
