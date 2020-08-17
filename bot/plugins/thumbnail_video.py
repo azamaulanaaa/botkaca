@@ -16,6 +16,10 @@ async def func(filepath):
     if not os_path.exists(filepath):
         return False
 
+    probe = ffmpeg.probe(filepath)
+    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+    duration = int(float(video_stream["duration"])/2) or 0
+
     out_file = filepath + ".jpg"
     
     cmd = [
@@ -23,6 +27,8 @@ async def func(filepath):
         "-hide_banner",
         "-i",
         filepath,
+        '-ss',
+        str(duration),
         '-vf',
         'thumbnail,scale=320:-1',
         '-frames:v',
