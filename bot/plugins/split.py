@@ -49,7 +49,7 @@ async def video(filepath, size):
 
     probe = ffmpeg.probe(filepath)
     video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-    duration = video_stream["duration"]
+    duration = int(video_stream["duration"])
 
     splited_duration = 0
     i = 0
@@ -69,7 +69,7 @@ async def video(filepath, size):
         probe = ffmpeg.probe(filepath)
         video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
-        splited_duration += video_stream["duration"]
+        splited_duration += int(video_stream["duration"])
         
         list.append(out_file)
     
