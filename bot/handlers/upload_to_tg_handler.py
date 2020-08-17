@@ -58,13 +58,11 @@ async def func(filepath: str, message: Message, delete=False):
         width = int(video_stream['width']) or 0
         height = int(video_stream['height']) or 0
 
-        thumbnail = thumbnail_video.func(filepath)
-
         async def upload_fn(file, **kwargs):
             return await message.reply_video(
                 file, 
                 supports_streaming=True,
-                thumb=thumbnail,
+                thumb=thumbnail_video.func(filepath) or None,
                 height=height,
                 width=width,
                 duration=duration,
