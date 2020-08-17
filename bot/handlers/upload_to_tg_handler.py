@@ -27,7 +27,7 @@ async def func(filepath: str, message: Message, delete=False):
 
     if os_path.isdir(filepath):
         ls = os_lisdir(filepath)
-        for filepath in ls:
+        async for filepath in ls:
             await message.edit(
                 LOCAL.UPLOADING_FILE.format(
                     name = os_path.basename(filepath)
