@@ -11,7 +11,7 @@ LOGGER = logging.getLogger(__name__)
 from os import path as os_path, remove as os_remove
 import asyncio
 from glob import glob
-import ffmpeg
+from bot.plugins import ffprobe
 
 async def func(filepath, size):
     if not os_path.isfile(filepath):
@@ -47,7 +47,7 @@ async def video(filepath, size):
     if not file_ext in supported:
         return False
 
-    probe = ffmpeg.probe(filepath)
+    probe = await ffprobe.func(filepath)
     video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
     duration = int(float(video_stream["duration"]))
 
@@ -82,7 +82,7 @@ async def video(filepath, size):
         )
         await process.communicate()
     
-        probe = ffmpeg.probe(out_file)
+        probe = await ffprobe.func(out_file)
         video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
         splited_duration += int(float(video_stream["duration"]))

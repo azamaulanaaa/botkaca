@@ -10,7 +10,6 @@ LOGGER = logging.getLogger(__name__)
 
 from os import path as os_path
 import asyncio
-import ffmpeg
 
 async def func(filepath):
     if not os_path.exists(filepath):

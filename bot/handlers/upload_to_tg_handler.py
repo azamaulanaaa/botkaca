@@ -12,9 +12,8 @@ from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir
 from time import time
 from math import floor
 from pyrogram import Message
-import ffmpeg
 from bot import LOCAL, CONFIG
-from bot.plugins import formater, split, thumbnail_video
+from bot.plugins import formater, split, thumbnail_video, ffprobe
 
 async def func(filepath: str, message: Message, delete=False):
     if not os_path.exists(filepath):
@@ -52,8 +51,9 @@ async def func(filepath: str, message: Message, delete=False):
     elif file_ext in video:
         split_fn = split.video
 
-        probe = ffmpeg.probe(filepath)
+        probe = await ffprobe.func(filepath)
         video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+
         duration = int(float(video_stream["duration"])) or 0
         width = int(video_stream['width']) or 0
         height = int(video_stream['height']) or 0
