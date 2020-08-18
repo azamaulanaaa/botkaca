@@ -1,10 +1,10 @@
-FROM python:3
+FROM python:3-alpine
 WORKDIR /app
-RUN apt-get update && apt-get install -y \
+RUN apk update && apk add -u -q \
     aria2 \
     ffmpeg \
-    && apt-get clean
+    build-base
 COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 COPY . .
 CMD ["python3", "-m", "bot"]
