@@ -6,5 +6,5 @@ RUN apk update && apk add -u -q \
     build-base
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
-COPY . .
+COPY bot bot
 CMD ["python3", "-m", "bot"]
