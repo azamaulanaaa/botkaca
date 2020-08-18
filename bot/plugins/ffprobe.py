@@ -33,6 +33,9 @@ async def func(filepath):
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
-    stdout = await process.communicate()[0]
+    stdout, stderr = await process.communicate()
+    LOGGER.debug("[stdout] " + stdout.decode())
+    LOGGER.debug("[stderr] " + stderr.decode())
+    
     info = json_loads(stdout.decode())
     return info
