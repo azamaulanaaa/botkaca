@@ -8,5 +8,5 @@ async def func(client : Client, message: Message):
     except:
         pass
     await message.reply_text(LOCAL.WELCOME_MESSAGE.format(cmd_pass = COMMAND.PASSWORD))
-    if not int(CONFIG.BOT_PRIVATE):
+    if not CONFIG.BOT_PASSWORD:
         await help_message_handler.func(client, message)
