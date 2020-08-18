@@ -26,6 +26,7 @@ async def func(client : Client, message: Message):
             await message.delete()
         except:
             pass
+        return
         
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
     dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
@@ -40,7 +41,21 @@ async def func(client : Client, message: Message):
     link = " ".join(args[1:])
     LOGGER.debug(f'Leeching : {link}')
 
-    download = aria2_api.add_uris([link])
+    try:
+        download = aria2_api.add_uris([link])
+    except Exception as e:
+        if "No URI" in str(e):
+            await reply.edit_text(
+                LOCAL.ARIA2_NO_URI
+            )
+            return
+        else:
+            LOGGER.error(str(e))
+            await reply.edit_text(
+                str(e)
+            )
+            return
+
     await progress_dl(reply, aria2_api, download.gid)
     download = aria2_api.get_download(download.gid)
     if not download.followed_by_ids:

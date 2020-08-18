@@ -10,6 +10,7 @@ LOCAL = Local({
     'ARIA2_DOWNLOAD_SUCCESS' : 'File downloaded : <code>{name}</code>',
     'ARIA2_DOWNLOAD_CANCELED' : 'Download canceled : <code>{name}</code>',
     'ARIA2_DEAD_LINK' : 'Download auto canceled : <code>{name}</code>\nYour Torrent/Link is Dead.',
+    'ARIA2_NO_URI' : 'Link is invalid.',
     'UPLOADING_FILE' : 'Uploading : <code>{name}</code>',
     'UPLOADING_PROGRESS' : 'Uploading : <code>{name}</code>\n{block}\nSize : {size}\nUP : {upload_speed}/s\nETA : {eta}',
     'UPLOAD_FAILED_FILE_MISSING' : 'Upload : Failed. file not found.\n<code>{name}</code>',
