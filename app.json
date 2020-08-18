@@ -6,7 +6,6 @@
       "pyrogram",
       "torrent",
       "3",
-      "productivity",
       "leecher"
     ],
     "website": "https://github.com/azamaulanaaa/botkaca",
@@ -25,12 +24,9 @@
         "value": ""
       },
       "BOT_PRIVATE": {
-        "description": "Set 0 to disable, 1 to enable",
-        "value": ""
-      },
-      "BOT_PASSWORD": {
-        "description": "password to use your bot",
-        "value": ""
+        "description": "enter pasword or leave it public",
+        "value": "",
+        "required" : false
       }
     },
     "stack": "container",
