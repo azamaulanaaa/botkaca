@@ -30,7 +30,7 @@ app.add_handler(
     )
 )
 
-if CONFIG.BOT_PRIVATE:
+if CONFIG.BOT_PASSWORD:
     # register /pass handler
     app.add_handler(
         MessageHandler(

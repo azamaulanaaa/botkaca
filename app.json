@@ -23,7 +23,7 @@
         "description": "get this value from @BotFather",
         "value": ""
       },
-      "BOT_PRIVATE": {
+      "BOT_PASSWORD": {
         "description": "enter pasword or leave it public",
         "value": "",
         "required" : false
