@@ -56,28 +56,28 @@ async def func(client : Client, message: Message):
             )
             return
 
-    await progress_dl(reply, aria2_api, download.gid)
-    download = aria2_api.get_download(download.gid)
-    if not download.followed_by_ids:
-        for file in download.files:
-            upload_status = await upload_to_tg_handler.func(
-                os_path_join(dir, file.path),
-                reply
-            )
-        download.remove(force=True, files=True)
-    else:
-        gids = download.followed_by_ids
-        for gid in gids:
-            await progress_dl(reply, aria2_api, gid)
-            download = aria2_api.get_download(gid)
+    if await progress_dl(reply, aria2_api, download.gid):
+        download = aria2_api.get_download(download.gid)
+        if not download.followed_by_ids:
             for file in download.files:
                 upload_status = await upload_to_tg_handler.func(
                     os_path_join(dir, file.path),
                     reply
                 )
             download.remove(force=True, files=True)
-    if not upload_status:
-        await reply.delete()
+        else:
+            gids = download.followed_by_ids
+            for gid in gids:
+                if await progress_dl(reply, aria2_api, gid):
+                    download = aria2_api.get_download(gid)
+                    for file in download.files:
+                        upload_status = await upload_to_tg_handler.func(
+                            os_path_join(dir, file.path),
+                            reply
+                        )
+                    download.remove(force=True, files=True)
+        if not upload_status:
+            await reply.delete()
     
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
@@ -115,13 +115,14 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
             else:
                 await message.edit(download.error_message)
             await asyncio_sleep(int(CONFIG.EDIT_SLEEP))
-            await progress_dl(message, aria2_api, gid, text)
+            return await progress_dl(message, aria2_api, gid, text)
         else:
             await message.edit(
                 LOCAL.ARIA2_DOWNLOAD_SUCCESS.format(
                     name=download.name
                 )
             )
+            return True
     except Exception as e:
         if " not found" in str(e) or "'file'" in str(e):
             await message.delete()
