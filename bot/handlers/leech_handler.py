@@ -20,7 +20,8 @@ from bot.handlers import upload_to_tg_handler
 from bot.handlers import cancel_leech_handler
 
 async def func(client : Client, message: Message):
-    if len(message.command) <= 1:        
+    args = message.text.split(" ")
+    if len(args) <= 1:        
         try:
             await message.delete()
         except:
@@ -36,7 +37,7 @@ async def func(client : Client, message: Message):
     aria2_api = STATUS.ARIA2_API
     await aria2_api.start()
 
-    link = " ".join(message.command[1:])
+    link = " ".join(args[1:])
     LOGGER.debug(f'Leeching : {link}')
 
     download = aria2_api.add_uris([link])

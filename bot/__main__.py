@@ -71,12 +71,19 @@ app.add_handler(
     )
 )
 
+# cancel button handler
 app.add_handler(
     CallbackQueryHandler(
         cancel_leech_handler.func,
         filters=lambda query: query.data.startswith(COMMAND.CANCEL_LEECH)
     )
 )
+
+# forward any message to leech handler
+@app.on_message(filters=Filters.private)
+async def default_message_handler(client : Client, message : Message):
+    message.text = "/" + COMMAND.LEECH + " " + message.text
+    return await leech_handler.func(client, message)
 
 if __name__ == '__main__':
     app.run()
