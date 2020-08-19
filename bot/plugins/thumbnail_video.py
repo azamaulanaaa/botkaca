@@ -10,10 +10,19 @@ LOGGER = logging.getLogger(__name__)
 
 from os import path as os_path
 import asyncio
+from bot.plugins import ffprobe
 
 async def func(filepath):
     if not os_path.exists(filepath):
         return False
+
+    probe = await ffprobe.func(filepath)
+    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+
+    try:
+        duration = float(video_stream["duration"]) // 2
+    except:
+        duration = 0
 
     out_file = filepath + ".jpg"
     
@@ -22,10 +31,13 @@ async def func(filepath):
         "-hide_banner",
         "-i",
         filepath,
-        '-vf',
-        'thumbnail,scale=320:-1',
-        '-frames:v',
+        '-ss',
+        str(duration),
+        '-vframes',
         '1',
+        '-vf',
+        'scale=320:-1',
+        '-y',
         out_file
     ]
     LOGGER.debug(cmd)
