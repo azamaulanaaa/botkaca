@@ -57,6 +57,7 @@ async def func(client : Client, message: Message):
             return
 
     if await progress_dl(reply, aria2_api, download.gid):
+        upload_status = True
         download = aria2_api.get_download(download.gid)
         if not download.followed_by_ids:
             for file in download.files:
