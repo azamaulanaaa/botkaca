@@ -1,6 +1,6 @@
 FROM python:3-alpine
 WORKDIR /app
-RUN apk update && apk add -u -q \
+RUN apk update && apk add -u \
     aria2 \
     ffmpeg \
     build-base
