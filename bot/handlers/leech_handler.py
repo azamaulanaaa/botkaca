@@ -113,10 +113,10 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
                                 )
                             ]])
                     )
+                await asyncio_sleep(int(CONFIG.EDIT_SLEEP))
+                return await progress_dl(message, aria2_api, gid, text)
             else:
                 await message.edit(download.error_message)
-            await asyncio_sleep(int(CONFIG.EDIT_SLEEP))
-            return await progress_dl(message, aria2_api, gid, text)
         else:
             await message.edit(
                 LOCAL.ARIA2_DOWNLOAD_SUCCESS.format(
