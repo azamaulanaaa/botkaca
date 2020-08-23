@@ -64,6 +64,7 @@ async def func(client : Client, message: Message):
             for file in download.files:
                 upload_status = await upload_to_tg_handler.func(
                     os_path_join(dir, file.path),
+                    client,
                     reply,
                     delete=True
                 )
@@ -77,6 +78,7 @@ async def func(client : Client, message: Message):
                     for file in download.files:
                         upload_status = await upload_to_tg_handler.func(
                             os_path_join(dir, file.path),
+                            client,
                             reply,
                             delete=True
                         )

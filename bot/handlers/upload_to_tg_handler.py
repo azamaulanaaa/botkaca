@@ -11,11 +11,11 @@ LOGGER = logging.getLogger(__name__)
 from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir as os_rmdir
 from time import time
 from math import floor
-from pyrogram import Message
+from pyrogram import Client, Message
 from bot import LOCAL, CONFIG
 from bot.plugins import formater, split, thumbnail_video, ffprobe
 
-async def func(filepath: str, message: Message, delete=False):
+async def func(filepath: str, client: Client,  message: Message, delete=False):
     if not os_path.exists(filepath):
         LOGGER.error(f'File not found : {filepath}')
         await message.edit_text(
@@ -44,14 +44,11 @@ async def func(filepath: str, message: Message, delete=False):
     file_ext = os_path.splitext(filepath)[1].lower()
     LOGGER.debug(f'Uploading : {filepath}')
 
-    split_fn = None
     if file_ext in photo:
-        upload_fn = message.reply_photo
-        split_fn = split.func
+        upload_fn = client.send_photo
     elif file_ext in video:
-        split_fn = split.video
-        async def upload_fn(file, **kwargs):
-            probe = await ffprobe.func(file)
+        async def upload_fn(chat_id, file, **kwargs):
+            probe = await ffprobe.func(file.path)
             video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
             duration = int(float(video_stream["duration"])) or 0
@@ -59,11 +56,12 @@ async def func(filepath: str, message: Message, delete=False):
             height = int(video_stream['height']) or 0
             await message.edit(
                 LOCAL.GENERATE_THUMBNAIL.format(
-                    name = os_path.basename(file)
+                    name = file.name
                 )
             )
-            thumbnail = await thumbnail_video.func(file)
-            await message.reply_video(
+            thumbnail = await thumbnail_video.func(file.path)
+            await client.send_video(
+                chat_id,
                 file, 
                 supports_streaming=True,
                 thumb=str(thumbnail) or None,
@@ -75,8 +73,7 @@ async def func(filepath: str, message: Message, delete=False):
             if thumbnail:
                 os_remove(str(thumbnail))
     else:
-        upload_fn = message.reply_document
-        split_fn = split.func
+        upload_fn = client.send_document
     
     if os_path.getsize(filepath) > int(CONFIG.UPLOAD_MAX_SIZE):
         LOGGER.debug(f'File too large : {filepath}')
@@ -85,40 +82,32 @@ async def func(filepath: str, message: Message, delete=False):
                 name = os_path.basename(filepath)
             )
         )
-        splited = await split_fn(filepath, int(CONFIG.UPLOAD_MAX_SIZE))
-        if not splited:
-            await message.edit(
-                LOCAL.SPLIT_FAILED.format(
-                    name = os_path.basename(filepath)
-                )
+
+    async for file in split.func(filepath, int(CONFIG.UPLOAD_MAX_SIZE)):
+        await message.edit(
+            LOCAL.UPLOADING_FILE.format(
+                name = file.name
             )
-            return
-        for filepath in splited:
-            await message.edit(
-                LOCAL.UPLOADING_FILE.format(
-                    name = os_path.basename(filepath)
-                )
-            )
-            await func(filepath, message, delete=True)
-        return False
+        )
     
-    info = {
-        "time" : time(),
-        "name" : os_path.basename(filepath),
-        "last_update" : 0,
-        "prev_text" : ""
-    }
-    await upload_fn(
-        filepath,
-        disable_notification=True,
-        progress=progress_upload_tg,
-        progress_args=(
-            message,
-            info
-        ),
-        caption=os_path.basename(filepath)
-    )            
-    LOGGER.debug(f'Uploaded : {filepath}')
+        info = {
+            "time" : time(),
+            "name" : file.name,
+            "last_update" : 0,
+            "prev_text" : ""
+        }
+        await upload_fn(
+            message.chat.id,
+            file,
+            disable_notification=True,
+            progress=progress_upload_tg,
+            progress_args=(
+                message,
+                info
+            ),
+            caption=f'<code>{file.name}</code>'
+        )            
+        LOGGER.debug(f'Uploaded : {file.name}')
     if delete:
         os_remove(filepath)
 
