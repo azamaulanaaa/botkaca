@@ -17,6 +17,7 @@ LOCAL = Local({
     'UPLOADING_FILE' : 'Uploading : <code>{name}</code>',
     'UPLOADING_PROGRESS' : 'Uploading : <code>{name}</code>\n{block}\nSize : {size}\nUP : {upload_speed}/s\nETA : {eta}',
     'UPLOAD_FAILED_FILE_MISSING' : 'Upload : Failed. file not found.\n<code>{name}</code>',
+    'GENERATE_THUMBNAIL' : 'Thumbnail : Generating.\n<code>{name}</code>',
     'SPLIT_FILE' : 'Spliting : <code>{name}</code>',
     'SPLIT_FAILED' : 'Split : Failed.\n<code>{name}</code>',
     'COMMAND_START' : 'start bot',

@@ -50,17 +50,20 @@ async def func(filepath: str, message: Message, delete=False):
         split_fn = split.func
     elif file_ext in video:
         split_fn = split.video
-
-        probe = await ffprobe.func(filepath)
-        video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-
-        duration = int(float(video_stream["duration"])) or 0
-        width = int(video_stream['width']) or 0
-        height = int(video_stream['height']) or 0
-        thumbnail = await thumbnail_video.func(filepath)
-
         async def upload_fn(file, **kwargs):
-            return await message.reply_video(
+            probe = await ffprobe.func(file)
+            video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+
+            duration = int(float(video_stream["duration"])) or 0
+            width = int(video_stream['width']) or 0
+            height = int(video_stream['height']) or 0
+            await message.edit(
+                LOCAL.GENERATE_THUMBNAIL.format(
+                    name = os_path.basename(file)
+                )
+            )
+            thumbnail = await thumbnail_video.func(file)
+            await message.reply_video(
                 file, 
                 supports_streaming=True,
                 thumb=str(thumbnail) or None,
@@ -69,6 +72,8 @@ async def func(filepath: str, message: Message, delete=False):
                 duration=duration,
                 **kwargs
             )
+            if thumbnail:
+                os_remove(str(thumbnail))
     else:
         upload_fn = message.reply_document
         split_fn = split.func
@@ -115,8 +120,6 @@ async def func(filepath: str, message: Message, delete=False):
     )            
     LOGGER.debug(f'Uploaded : {filepath}')
     if delete:
-        if thumbnail:
-            os_remove(thumbnail)
         os_remove(filepath)
 
 async def progress_upload_tg(current, total, message, info):
