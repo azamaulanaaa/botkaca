@@ -33,3 +33,8 @@ async def func(client: Client, message: Message):
             gid = download.gid
         )
     await message.reply(text, quote=False)
+    if message.chat.type == "private":
+        try:
+            await message.delete()
+        except:
+            pass
