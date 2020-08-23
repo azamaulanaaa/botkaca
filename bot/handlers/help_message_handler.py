@@ -2,7 +2,7 @@ from pyrogram import Client, Message
 from bot import COMMAND, LOCAL
 
 async def func(client : Client, message: Message):
-    text = "<b>Bot Command</b>\n"
+    text = LOCAL.HELP_MESSAGE_HEADER + "\n"
     for cmd_code, cmd in COMMAND:
         info = LOCAL.NO_HELP_INFO
         cmd_local = f'COMMAND_{cmd_code}' 
