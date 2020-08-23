@@ -79,7 +79,7 @@ async def func(filepath: str, message: Message, delete=False):
         split_fn = split.func
     
     if os_path.getsize(filepath) > int(CONFIG.UPLOAD_MAX_SIZE):
-        LOGGER.warning(f'File too large : {filepath}')
+        LOGGER.debug(f'File too large : {filepath}')
         await message.edit_text(
             LOCAL.SPLIT_FILE.format(
                 name = os_path.basename(filepath)
