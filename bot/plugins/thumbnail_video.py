@@ -14,6 +14,7 @@ from bot.plugins import ffprobe
 
 async def func(filepath):
     if not os_path.exists(filepath):
+        LOGGER.error('File not found : ' + filepath)
         return False
 
     probe = await ffprobe.func(filepath)
@@ -49,4 +50,5 @@ async def func(filepath):
     )
     await process.communicate()
 
+    LOGGER.debug('Thumbnail : ' + out_file)
     return out_file

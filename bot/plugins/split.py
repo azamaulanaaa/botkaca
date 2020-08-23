@@ -15,6 +15,7 @@ from bot.plugins import ffprobe
 
 async def func(filepath, size):
     if not os_path.isfile(filepath):
+        LOGGER.error('File not found : ' + filepath)
         return False
 
     cmd = [
@@ -41,6 +42,7 @@ async def func(filepath, size):
 async def video(filepath, size):
     supported = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
     if not os_path.isfile(filepath):
+        LOGGER.error('File not found : ' + filepath)
         return False
     
     file_path_name, file_ext = os_path.splitext(filepath)
