@@ -25,6 +25,7 @@ LOCAL = Local({
     'COMMAND_HELP' : 'this message',
     'COMMAND_LEECH' : 'leech link or magnet',
     'COMMAND_CANCEL_LEECH' : 'cancel leeching',
+    'COMMAND_LEECH_LIST' : 'list on going leech',
     'BLOCK_EMPTY' : "▱",
     "BLOCK_FILLED" : "▰"
 })
