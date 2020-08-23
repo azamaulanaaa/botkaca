@@ -77,7 +77,8 @@ COMMAND = Command({
     'PASSWORD' : 'pass',
     'HELP' : 'help',
     'LEECH' : 'leech',
-    'CANCEL_LEECH' : 'cancel'
+    'CANCEL_LEECH' : 'cancel',
+    'LEECH_LIST' : 'list'
 })
 
 # GOAL:

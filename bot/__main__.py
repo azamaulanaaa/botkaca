@@ -7,7 +7,8 @@ from bot.handlers import (
     wrong_room_handler,
     help_message_handler,
     leech_handler,
-    cancel_leech_handler
+    cancel_leech_handler,
+    leech_list_handler
 )
 
 # Initialize bot
@@ -70,6 +71,15 @@ app.add_handler(
         filters=Filters.command(COMMAND.CANCEL_LEECH)
     )
 )
+
+# register /list handler
+app.add_handler(
+    MessageHandler(
+        leech_list_handler.func,
+        filters=Filters.command(COMMAND.LEECH_LIST)
+    )
+)
+
 
 # cancel button handler
 app.add_handler(

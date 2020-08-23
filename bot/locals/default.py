@@ -6,6 +6,8 @@ LOCAL = Local({
     'NO_HELP_INFO' : 'no information',
     'WRONG_ROOM' : 'I a\'m not suppose to be here.\nID : <code>{CHAT_ID}</code>',
     'WELCOME_MESSAGE' : "Hi!\nI'm <b>Bot</b>!\nPowered by pyrogram.\n\nUse <code>/{cmd_pass} </code>to enter the password.",
+    'LEECH_LIST_MESSAGE_HEADER' : '<b>Leech Status</b>',
+    'LEECH_LIST_FORMAT' : 'Name: <code>{name}</code>\nStatus: {status}\nID: <code>{gid}</code>\n\n',
     'ARIA2_CHECKING_LINK' : "checking...",
     'ARIA2_DOWNLOAD_STATUS' : "Downloading : <code>{name}</code>\n{block}\nSize : {total_size}\nDN : {download_speed} / UP : {upload_speed}\nETA : {eta}\nID : <code>{gid}</code>",
     'ARIA2_DOWNLOAD_SUCCESS' : 'File downloaded : <code>{name}</code>',
