@@ -58,6 +58,7 @@ async def video(filepath, size):
     vbyterate = int(video_stream['bit_rate']) / 8
     abyterate = int(audio_stream['bit_rate']) / 8
 
+    size = size * 9 // 10
     max_duration = size // (vbyterate + abyterate)
 
     splited_duration = 0
