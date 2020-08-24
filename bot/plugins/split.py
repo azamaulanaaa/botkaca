@@ -14,28 +14,31 @@ import asyncio
 from bot.plugins import ffprobe, IOHandler
 
 async def func(filepath, size):
-    file_ext = os_path.splitext(filepath)[1]
-    video_units = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
-    if file_ext in video_units:
-        async for splitted_video in video(filepath, size):
-            with FileIO(splitted_video, 'rb') as f:
-                f.name = os_path.basename(splitted_video)
-                f.path = splitted_video
-                yield f
-            os_remove(splitted_video)
+    if os_path.getsize(filepath) <= size:
+        with FileIO(filepath, 'rb') as f:
+            f.name = os_path.basename(filepath)
+            f.path = filepath
+            yield f
     else:
-        total_size = os_path.getsize(filepath)
-        pos = 0
-        index = 0
-        while pos < total_size:
-            index += 1
-            with IOHandler.ChunkIO(filepath, pos, size) as f:
-                prefix = ''
-                if size < total_size:
-                    prefix = f'.{index:03d}'
-                pos += size
-                f.name = os_path.basename(filepath) + prefix
-                yield f
+        file_ext = os_path.splitext(filepath)[1]
+        video_units = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
+        if file_ext in video_units:
+            async for splitted_video in video(filepath, size):
+                with FileIO(splitted_video, 'rb') as f:
+                    f.name = os_path.basename(splitted_video)
+                    f.path = splitted_video
+                    yield f
+                os_remove(splitted_video)
+        else:
+            total_size = os_path.getsize(filepath)
+            pos = 0
+            index = 0
+            while pos < total_size:
+                index += 1
+                with IOHandler.ChunkIO(filepath, pos, size) as f:
+                    pos += size
+                    f.name = os_path.basename(filepath) + f'.{index:03d}'
+                    yield f
 
 async def video(filepath, size):
     supported = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
@@ -50,13 +53,18 @@ async def video(filepath, size):
 
     probe = await ffprobe.func(filepath)
     video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+    audio_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'audio'), None)
     duration = int(float(video_stream["duration"]))
+    vbyterate = int(video_stream['bit_rate']) / 8
+    abyterate = int(audio_stream['bit_rate']) / 8
+
+    max_duration = size // (vbyterate + abyterate)
 
     splited_duration = 0
     i = 0
     while splited_duration < duration:    
         i+=1
-        out_file = file_path_name + ".{:03d}".format(i) + file_ext
+        out_file = file_path_name + f".{i:03d}" + file_ext
         
         cmd = [
             "ffmpeg",
@@ -65,12 +73,13 @@ async def video(filepath, size):
             filepath,
             '-ss',
             str(splited_duration),
-            '-fs',
-            str(size * 99/100),
+            '-t',
+            str(max_duration),
             '-c',
             'copy',
             '-async',
             '1',
+            '-y',
             out_file
         ]
         LOGGER.debug(cmd)
@@ -80,12 +89,12 @@ async def video(filepath, size):
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
-        await process.communicate()
-    
-        probe = await ffprobe.func(out_file)
-        video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+        stdout, stderr = await process.communicate()
+        LOGGER.debug(f'[stdout] {stdout.decode()}')
+        if not stderr.decode():
+            LOGGER.error(f'[stderr] {stderr.decode()}')
 
-        splited_duration += int(float(video_stream["duration"]))
+        splited_duration += max_duration
         
         LOGGER.debug(out_file)
         yield out_file
