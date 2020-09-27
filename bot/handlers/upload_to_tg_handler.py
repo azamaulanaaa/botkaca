@@ -49,11 +49,14 @@ async def func(filepath: str, client: Client,  message: Message, delete=False):
     elif file_ext in video:
         async def upload_fn(chat_id, file, **kwargs):
             probe = await ffprobe.func(file.path)
-            video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
-            duration = int(float(video_stream["duration"])) or 0
-            width = int(video_stream['width']) or 0
-            height = int(video_stream['height']) or 0
+            duration = int(float(probe["format"]["duration"]))
+
+            video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
+            width = int(video_stream['width'] if 'width' in video_stream else 0)
+            height = int(video_stream['height'] if 'height' in video_stream else 0)
+
+
             await message.edit(
                 LOCAL.GENERATE_THUMBNAIL.format(
                     name = file.name
