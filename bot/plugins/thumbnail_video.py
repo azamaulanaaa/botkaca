@@ -30,10 +30,10 @@ async def func(filepath):
     cmd = [
         "ffmpeg",
         "-hide_banner",
-        "-i",
-        filepath,
         '-ss',
         str(duration),
+        "-i",
+        filepath,
         '-vframes',
         '1',
         '-vf',
