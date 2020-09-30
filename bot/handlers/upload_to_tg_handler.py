@@ -115,7 +115,7 @@ async def func(filepath: str, client: Client,  message: Message, delete=False):
         os_remove(filepath)
 
 async def progress_upload_tg(current, total, message, info):
-    percentage = round(current * 100 / total)
+    percentage = round(current * 10000 / total) / 100
     block = ""
     for i in range(1, 11):
         if i <= floor(percentage/10):
@@ -127,6 +127,7 @@ async def progress_upload_tg(current, total, message, info):
     text = LOCAL.UPLOADING_PROGRESS.format(
             name = info["name"],
             block = block,
+            percentage = percentage,
             size = formater.format_bytes(total),
             upload_speed = formater.format_bytes(up_speed),
             eta = formater.format_time((total - current)/up_speed)
