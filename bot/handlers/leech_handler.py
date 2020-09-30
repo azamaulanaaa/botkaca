@@ -92,8 +92,8 @@ async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, pre
         if not download.is_complete:
             if not download.error_message:
                 block = ""
-                for i in range(1, CONFIG.BAR_SIZE + 1):
-                    if i <= floor(download.progress * CONFIG.BAR_SIZE/100):
+                for i in range(1, int(CONFIG.BAR_SIZE) + 1):
+                    if i <= floor(download.progress * int(CONFIG.BAR_SIZE)/100):
                         block += LOCAL.BLOCK_FILLED
                     else:
                         block += LOCAL.BLOCK_EMPTY
