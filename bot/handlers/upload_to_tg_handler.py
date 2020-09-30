@@ -117,8 +117,8 @@ async def func(filepath: str, client: Client,  message: Message, delete=False):
 async def progress_upload_tg(current, total, message, info):
     percentage = round(current * 10000 / total) / 100
     block = ""
-    for i in range(1, 11):
-        if i <= floor(percentage/10):
+    for i in range(1, CONFIG.BAR_SIZE + 1):
+        if i <= floor(percentage * CONFIG.BAR_SIZE/100):
             block += LOCAL.BLOCK_FILLED
         else:
             block += LOCAL.BLOCK_EMPTY

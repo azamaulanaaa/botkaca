@@ -16,7 +16,8 @@ CONFIG = Config({
     'CHAT_ID' : [],
     'EDIT_SLEEP' : 3,
     'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
-    'ARIA2_DIR' : 'downloads'
+    'ARIA2_DIR' : 'downloads',
+    'BAR_SIZE' : 10
 })
 
 # GOAL:
