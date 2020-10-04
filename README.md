@@ -1,21 +1,75 @@
 # BOTKACA
 
-Telegram bot leecher powered by python3.
+Botkaca allows you to leech (re-upload) contents from internet including torrent to telegram. This bot using Telegram MTProto powered by pyrogram.
+
+## Feature
+
+* Set as Private (using password)
+* Able to use at group
+* Able to leech larger than 2GB (telegram max upload at once)
+* Split as video (.mp4, .mkv, .avi, .webm, .wmv, .mov)
+* Upload files as media or as document
+* Custom thumbnail
+* Default torrent tracker (_untested_)
+* Customizeable language (default as englsih)
+* Configuration using environment variable
+
+## Configuration
+
+Change config by set the corresponding environment variable name.
+
+* `WORKDIR` : working directory path
+* `LOG_FILE` : log file name
+* `MAX_LOG_SIZE` : maximum log size
+* `EDIT_SLEEP` : delay between edit message
+* `UPLOAD_MAX_SIZE` : maximum file size upload at once (watchout telegram max upload size)
+* `UPLOAD_AS_DOC` : Upload any files as document (1 or 0)
+* `ARIA2_DIR` : download directory before uploading
+* `TORRENT_TRACKER` : addition tracker for all torrent, separated by (`,`)
+* `BAR_SIZE` : bar size on upload and download
+* `THUMBNAIL_NAME` : default thumbnail file naem
+* `LOCAL` : languange bot using
 
 ## Deploy button
 
-~~`[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://deploy.cloud.run?git_repo=https://github.com/azamaulanaaa/botkaca.git "Google Cloud")`~~
+[<img src="https://deploy.cloud.run/button.svg" alt="Run on Google Cloud" height="40"/>](https://deploy.cloud.run?git_repo=https://github.com/azamaulanaaa/botkaca.git "Google Cloud")
+[<img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy to Heroku" height="40"/>](https://heroku.com/deploy?template=https://github.com/azamaulanaaa/botkaca "Heroku")
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/azamaulanaaa/botkaca "Heroku")
-
-*Currently google cloud does not supported due to app.json clash with heroku. Check out [issue #112](https://github.com/GoogleCloudPlatform/cloud-run-button/issues/112 "Both Cloud Run Button and Heroku Button - app.json Clash")*
+*Currently google cloud does not supported due to app.json clash with heroku. Check out Google Cloud Run issue [#112](https://github.com/GoogleCloudPlatform/cloud-run-button/issues/112#issuecomment-663858778 "Both Cloud Run Button and Heroku Button - app.json Clash")*
 
 ## How to run
 
 ```sh
 #!/bin/sh
+
+# get botkaca source
 git clone https://github.com/azamaulanaaa/botkaca.git
-cd botkaca
-docker build -t botkaca .
-docker run -it botkaca
+
+# build then execute using docker image
+docker build -t azamaulanaaa/botkaca botkaca
+docker run -it azamaulanaaa/botkaca
 ```
+
+## Bot Details
+
+### Specification
+
+* Python 3
+* Dependence
+    * pyrogram asyc
+    * aria2p
+* Program Dependece
+    * aria2c
+    * ffmpeg + ffprobe
+* Dockerize
+
+### Folder Structure
+
+* `/` : development detail and deploy config
+* `/bot` : module root dir
+    * `__init__.py` : bot config
+    * `__main__.py` : register handler then run bot
+    * `command.py` & `config.py` & `status.py` : control and maipulate bot states
+* `/bot/handler` : message handler
+* `/bot/locals` : localization and default is en
+* `/bot/plugins` : third party implementation
