@@ -20,7 +20,8 @@ CONFIG = Config({
     'ARIA2_DIR' : 'downloads',
     'TORRENT_TRACKER' : '',
     'BAR_SIZE' : 10,
-    'THUMBNAIL_NAME' : 'default_thumbnail.jpg'
+    'THUMBNAIL_NAME' : 'default_thumbnail.jpg',
+    'LOCAL' : 'en'
 })
 
 # GOAL:
@@ -69,7 +70,7 @@ del logfile
 # GOAL:
 # Localization
 
-from bot.locals.default import LOCAL
+LOCAL = __import__(name = 'bot.locals.' + CONFIG.LOCAL, fromlist = ['LOCAL']).LOCAL
 
 # GOAL:
 # load Command format
