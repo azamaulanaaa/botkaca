@@ -7,8 +7,11 @@ async def func(client : Client, message: Message):
         await message.delete()
     except:
         pass
+    welcome_message = LOCAL.WELCOME_MESSAGE
+    if CONFIG.BOT_PASSWORD:
+        welcome_message += LOCAL.PASS_REQUIRED.format(cmd_pass = COMMAND.PASSWORD)
     await message.reply_text(
-        LOCAL.WELCOME_MESSAGE.format(cmd_pass = COMMAND.PASSWORD),
+        welcome_message,
         disable_web_page_preview=True
     )
     if not CONFIG.BOT_PASSWORD:
