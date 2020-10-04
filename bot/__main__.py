@@ -10,7 +10,8 @@ from bot.handlers import (
     cancel_leech_handler,
     leech_list_handler,
     thumbnail_handler,
-    upload_as_doc_handler
+    upload_as_doc_handler,
+    tracker_handler
 )
 
 # Initialize bot
@@ -104,6 +105,14 @@ app.add_handler(
     MessageHandler(
         upload_as_doc_handler.func,
         filters=Filters.command(COMMAND.UPLOAD_AS_DOC)
+    )
+)
+
+# register /set_tracker handler
+app.add_handler(
+    MessageHandler(
+        tracker_handler.set,
+        filters=Filters.command(COMMAND.SET_TRACKER)
     )
 )
 

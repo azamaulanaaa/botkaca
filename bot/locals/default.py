@@ -27,6 +27,8 @@ LOCAL = Local({
     'THUMBNAIL_DELETING' : 'Deleting thumbnail',
     'THUMBNAIL_RESETED' : 'Thumbnail reseted',
     'UPLOAD_AS_DOC' : 'Upload as document set to {status}.',
+    'TRACKER_RESET' : 'Default torrent tracker reset.',
+    'TRACKER_APPLIED' : 'Default torrent tracker applied.',
     'COMMAND_START' : 'start bot',
     'COMMAND_PASSWORD' : 'enter password that required',
     'COMMAND_HELP' : 'this message',
@@ -36,6 +38,7 @@ LOCAL = Local({
     'COMMAND_SET_THUMBNAIL' : 'set custom video thumbail',
     'COMMAND_RESET_THUMBNAIL' : 'reset custom video thumbnail',
     'COMMAND_UPLOAD_AS_DOC' : 'toggle upload anything as document',
+    'COMMAND_SET_TRACKER' : 'set default tracker, sparated by newline',
     'BLOCK_EMPTY' : "▱",
     "BLOCK_FILLED" : "▰"
 })

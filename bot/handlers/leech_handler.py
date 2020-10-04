@@ -42,7 +42,10 @@ async def func(client : Client, message: Message):
     LOGGER.debug(f'Leeching : {link}')
 
     try:
-        download = aria2_api.add_uris([link], options={'continue_downloads' : True})
+        download = aria2_api.add_uris([link], options={
+            'continue_downloads' : True,
+            'bt_tracker' : STATUS.DEFAULT_TRACKER
+        })
     except Exception as e:
         if "No URI" in str(e):
             await reply.edit_text(

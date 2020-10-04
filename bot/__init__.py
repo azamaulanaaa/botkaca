@@ -18,6 +18,7 @@ CONFIG = Config({
     'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
     'UPLOAD_AS_DOC' : 0,
     'ARIA2_DIR' : 'downloads',
+    'TORRENT_TRACKER' : '',
     'BAR_SIZE' : 10,
     'THUMBNAIL_NAME' : 'default_thumbnail.jpg'
 })
@@ -84,7 +85,8 @@ COMMAND = Command({
     'LEECH_LIST' : 'list',
     'SET_THUMBNAIL' : 'set_thumbnail',
     'RESET_THUMBNAIL' : 'reset_thumbnail',
-    'UPLOAD_AS_DOC' : 'upload_as_doc'
+    'UPLOAD_AS_DOC' : 'upload_as_doc',
+    'SET_TRACKER' : 'set_tracker'
 })
 
 # GOAL:
@@ -96,5 +98,6 @@ from bot.status import Status
 STATUS = Status({
     'START_TIME' : time(),
     'ARIA2_API' : None,
-    'UPLOAD_AS_DOC' : bool(int(CONFIG.UPLOAD_AS_DOC))
+    'UPLOAD_AS_DOC' : bool(int(CONFIG.UPLOAD_AS_DOC)),
+    'DEFAULT_TRACKER' : CONFIG.TORRENT_TRACKER.split(',')
 })
