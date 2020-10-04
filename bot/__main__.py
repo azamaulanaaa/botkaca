@@ -8,7 +8,8 @@ from bot.handlers import (
     help_message_handler,
     leech_handler,
     cancel_leech_handler,
-    leech_list_handler
+    leech_list_handler,
+    thumbnail_handler
 )
 
 # Initialize bot
@@ -80,6 +81,22 @@ app.add_handler(
     )
 )
 
+
+# register /set_thumbnail handler
+app.add_handler(
+    MessageHandler(
+        thumbnail_handler.set,
+        filters=Filters.command(COMMAND.SET_THUMBNAIL)
+    )
+)
+
+# register /reset_thumbnail handler
+app.add_handler(
+    MessageHandler(
+        thumbnail_handler.reset,
+        filters=Filters.command(COMMAND.RESET_THUMBNAIL)
+    )
+)
 
 # cancel button handler
 app.add_handler(

@@ -62,18 +62,21 @@ async def func(filepath: str, client: Client,  message: Message, delete=False):
                     name = file.name
                 )
             )
-            thumbnail = await thumbnail_video.func(file.path)
+            thumbnail = os_path.join(CONFIG.ROOT, CONFIG.WORKDIR, CONFIG.THUMBNAIL_NAME)
+            use_default_thumbnail = os_path.exists(thumbnail)
+            if not use_default_thumbnail:
+                thumbnail = await thumbnail_video.func(file.path)
             await client.send_video(
                 chat_id,
                 file, 
                 supports_streaming=True,
-                thumb=str(thumbnail) or None,
+                thumb=str(thumbnail),
                 height=height,
                 width=width,
                 duration=duration,
                 **kwargs
             )
-            if thumbnail:
+            if not use_default_thumbnail:
                 os_remove(str(thumbnail))
     else:
         upload_fn = client.send_document

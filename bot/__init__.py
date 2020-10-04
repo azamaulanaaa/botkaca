@@ -17,7 +17,8 @@ CONFIG = Config({
     'EDIT_SLEEP' : 3,
     'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
     'ARIA2_DIR' : 'downloads',
-    'BAR_SIZE' : 10
+    'BAR_SIZE' : 10,
+    'THUMBNAIL_NAME' : 'default_thumbnail.jpg'
 })
 
 # GOAL:
@@ -79,7 +80,9 @@ COMMAND = Command({
     'HELP' : 'help',
     'LEECH' : 'leech',
     'CANCEL_LEECH' : 'cancel',
-    'LEECH_LIST' : 'list'
+    'LEECH_LIST' : 'list',
+    'SET_THUMBNAIL' : 'set_thumbnail',
+    'RESET_THUMBNAIL' : 'reset_thumbnail'
 })
 
 # GOAL:
