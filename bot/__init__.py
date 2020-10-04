@@ -82,7 +82,8 @@ COMMAND = Command({
     'CANCEL_LEECH' : 'cancel',
     'LEECH_LIST' : 'list',
     'SET_THUMBNAIL' : 'set_thumbnail',
-    'RESET_THUMBNAIL' : 'reset_thumbnail'
+    'RESET_THUMBNAIL' : 'reset_thumbnail',
+    'UPLOAD_AS_DOC' : 'upload_as_doc'
 })
 
 # GOAL:
@@ -93,5 +94,6 @@ from bot.status import Status
 
 STATUS = Status({
     'START_TIME' : time(),
-    'ARIA2_API' : None
+    'ARIA2_API' : None,
+    'UPLOAD_AS_DOC' : False
 })

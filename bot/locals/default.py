@@ -26,6 +26,7 @@ LOCAL = Local({
     'THUMBNAIL_READY' : 'Thumbnail ready to use.',
     'THUMBNAIL_DELETING' : 'Deleting thumbnail',
     'THUMBNAIL_RESETED' : 'Thumbnail reseted',
+    'UPLOAD_AS_DOC' : 'Upload as document set to {status}.',
     'COMMAND_START' : 'start bot',
     'COMMAND_PASSWORD' : 'enter password that required',
     'COMMAND_HELP' : 'this message',
@@ -34,6 +35,7 @@ LOCAL = Local({
     'COMMAND_LEECH_LIST' : 'list on going leech',
     'COMMAND_SET_THUMBNAIL' : 'set custom video thumbail',
     'COMMAND_RESET_THUMBNAIL' : 'reset custom video thumbnail',
+    'COMMAND_UPLOAD_AS_DOC' : 'toggle upload anything as document',
     'BLOCK_EMPTY' : "▱",
     "BLOCK_FILLED" : "▰"
 })

@@ -12,7 +12,7 @@ from os import path as os_path, listdir as os_lisdir, remove as os_remove, rmdir
 from time import time
 from math import floor
 from pyrogram import Client, Message
-from bot import LOCAL, CONFIG
+from bot import LOCAL, CONFIG, STATUS
 from bot.plugins import formater, split, thumbnail_video, ffprobe
 
 async def func(filepath: str, client: Client,  message: Message, delete=False):
@@ -44,7 +44,9 @@ async def func(filepath: str, client: Client,  message: Message, delete=False):
     file_ext = os_path.splitext(filepath)[1].lower()
     LOGGER.debug(f'Uploading : {filepath}')
 
-    if file_ext in photo:
+    if STATUS.UPLOAD_AS_DOC:
+        upload_fn = client.send_document
+    elif file_ext in photo:
         upload_fn = client.send_photo
     elif file_ext in video:
         async def upload_fn(chat_id, file, **kwargs):
