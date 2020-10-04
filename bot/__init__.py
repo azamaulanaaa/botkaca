@@ -16,6 +16,7 @@ CONFIG = Config({
     'CHAT_ID' : [],
     'EDIT_SLEEP' : 3,
     'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
+    'UPLOAD_AS_DOC' : 0,
     'ARIA2_DIR' : 'downloads',
     'BAR_SIZE' : 10,
     'THUMBNAIL_NAME' : 'default_thumbnail.jpg'
@@ -95,5 +96,5 @@ from bot.status import Status
 STATUS = Status({
     'START_TIME' : time(),
     'ARIA2_API' : None,
-    'UPLOAD_AS_DOC' : False
+    'UPLOAD_AS_DOC' : bool(int(CONFIG.UPLOAD_AS_DOC))
 })
