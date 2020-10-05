@@ -11,7 +11,6 @@ app = Client(
     api_id=CONFIG.API_ID,
     api_hash=CONFIG.API_HASH,
     workdir=os_path_join(CONFIG.ROOT, CONFIG.WORKDIR),
-    workers=343,
     plugins=dict(root="bot/handlers")
 )
 app.set_parse_mode("html")
