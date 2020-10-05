@@ -30,10 +30,10 @@ async def func(client : Client, message: Message):
         return
         
     reply = await message.reply_text(LOCAL.ARIA2_CHECKING_LINK)
-    dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
+    download_dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
     STATUS.ARIA2_API = STATUS.ARIA2_API or aria2.aria2(
         config={
-            'dir' : dir
+            'dir' : download_dir
         }
     )
     aria2_api = STATUS.ARIA2_API
@@ -61,17 +61,10 @@ async def func(client : Client, message: Message):
             return
 
     if await progress_dl(reply, aria2_api, download.gid):
-        upload_status = True
         download = aria2_api.get_download(download.gid)
         if not download.followed_by_ids:
             download.remove(force=True)
-            for file in download.files:
-                upload_status = await upload_to_tg_handler.func(
-                    os_path_join(dir, file.path),
-                    client,
-                    reply,
-                    delete=True
-                )
+            await upload_files(client, reply, abs_files(download_dir, download.files))
         else:
             gids = download.followed_by_ids
             download.remove(force=True, files=True)
@@ -79,16 +72,25 @@ async def func(client : Client, message: Message):
                 if await progress_dl(reply, aria2_api, gid):
                     download = aria2_api.get_download(gid)
                     download.remove(force=True)
-                    for file in download.files:
-                        upload_status = await upload_to_tg_handler.func(
-                            os_path_join(dir, file.path),
-                            client,
-                            reply,
-                            delete=True
-                        )
-        if not upload_status:
+                    await upload_files(client, reply, abs_files(download_dir, download.files))
+        try:
             await reply.delete()
-    
+        except:
+            pass
+
+def abs_files(root, files):
+    def join(file):
+        return os_path_join(root, file.path)
+    return map(join, files)
+
+async def upload_files(client, reply, filepaths):
+    for filepath in filepaths:
+        await upload_to_tg_handler.func(
+            filepath,
+            client,
+            reply,
+            delete=True
+        )
 
 async def progress_dl(message : Message, aria2_api : aria2.aria2, gid : int, previous_text=None):
     try:
