@@ -100,5 +100,6 @@ STATUS = Status({
     'START_TIME' : time(),
     'ARIA2_API' : None,
     'UPLOAD_AS_DOC' : bool(int(CONFIG.UPLOAD_AS_DOC)),
-    'DEFAULT_TRACKER' : CONFIG.TORRENT_TRACKER.split(',')
+    'DEFAULT_TRACKER' : CONFIG.TORRENT_TRACKER.split(','),
+    'CHAT_ID' : []
 })

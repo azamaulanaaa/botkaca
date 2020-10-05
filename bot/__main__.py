@@ -1,6 +1,6 @@
 from os.path import join as os_path_join
 from pyrogram import Client, Message, MessageHandler, Filters, CallbackQueryHandler
-from bot import CONFIG, COMMAND, LOCAL, LOGGER
+from bot import CONFIG, COMMAND, LOCAL, LOGGER, STATUS
 from bot.handlers import *
 
 # Initialize bot
@@ -36,7 +36,7 @@ if CONFIG.BOT_PASSWORD:
     app.add_handler(
         MessageHandler(
             wrong_room_handler.func,
-            filters = lambda msg: not msg.chat.id in CONFIG.CHAT_ID
+            filters = lambda msg: not msg.chat.id in STATUS.CHAT_ID
         )
     )
 
