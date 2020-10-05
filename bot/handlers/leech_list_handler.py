@@ -9,11 +9,12 @@ LOGGER = logging.getLogger(__name__)
 # create /list handler
 
 from os.path import join as os_path_join
-from pyrogram import Client, Message
+from pyrogram import Client, Message, Filters
 from aria2p import Download
-from bot import LOCAL, STATUS, CONFIG
+from bot import LOCAL, STATUS, CONFIG, COMMAND
 from bot.plugins import aria2
 
+@Client.on_message(Filters.command(COMMAND.LEECH_LIST))
 async def func(client: Client, message: Message):
     dir = os_path_join(CONFIG.ROOT, CONFIG.ARIA2_DIR)
     STATUS.ARIA2_API = STATUS.ARIA2_API or aria2.aria2(

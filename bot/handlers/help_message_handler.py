@@ -1,6 +1,7 @@
-from pyrogram import Client, Message
+from pyrogram import Client, Message, Filters
 from bot import COMMAND, LOCAL
 
+@Client.on_message(Filters.command(COMMAND.HELP))
 async def func(client : Client, message: Message):
     text = LOCAL.HELP_MESSAGE_HEADER + "\n"
     for cmd_code, cmd in COMMAND:
