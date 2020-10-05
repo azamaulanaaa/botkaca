@@ -40,11 +40,5 @@ if CONFIG.BOT_PASSWORD:
         )
     )
 
-# # forward any message to leech handler
-# @app.on_message(filters=Filters.private)
-# async def default_message_handler(client : Client, message : Message):
-#     message.text = "/" + COMMAND.LEECH + " " + message.text
-#     return await leech_handler.func(client, message)
-
 if __name__ == '__main__':
     app.run()
