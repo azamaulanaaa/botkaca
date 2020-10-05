@@ -15,7 +15,7 @@ from math import floor
 from pyrogram import Client, Message, Filters, InlineKeyboardMarkup, InlineKeyboardButton
 from aria2p.downloads import Download, File
 from bot import LOCAL, STATUS, CONFIG, COMMAND
-from bot.plugins import aria2
+from bot.plugins import aria2, zipfile
 from bot.handlers import upload_to_tg_handler
 from bot.handlers import cancel_leech_handler
 
@@ -64,7 +64,7 @@ async def func(client : Client, message: Message):
         download = aria2_api.get_download(download.gid)
         if not download.followed_by_ids:
             download.remove(force=True)
-            await upload_files(client, reply, abs_files(download_dir, download.files))
+            await upload_files(client, reply, abs_files(download_dir, download.files), os_path_join(download_dir, download.name + '.zip'))
         else:
             gids = download.followed_by_ids
             download.remove(force=True, files=True)
@@ -72,7 +72,7 @@ async def func(client : Client, message: Message):
                 if await progress_dl(reply, aria2_api, gid):
                     download = aria2_api.get_download(gid)
                     download.remove(force=True)
-                    await upload_files(client, reply, abs_files(download_dir, download.files))
+                    await upload_files(client, reply, abs_files(download_dir, download.files), os_path_join(download_dir, download.name + '.zip'))
         try:
             await reply.delete()
         except:
@@ -83,10 +83,19 @@ def abs_files(root, files):
         return os_path_join(root, file.path)
     return map(join, files)
 
-async def upload_files(client, reply, filepaths):
-    for filepath in filepaths:
+async def upload_files(client, reply, filepaths, zippath):
+    if not STATUS.UPLOAD_AS_ZIP:
+        for filepath in filepaths:
+            await upload_to_tg_handler.func(
+                filepath,
+                client,
+                reply,
+                delete=True
+            )
+    else:
+        zipfile.func(filepaths, zippath)
         await upload_to_tg_handler.func(
-            filepath,
+            zippath,
             client,
             reply,
             delete=True

@@ -17,6 +17,7 @@ CONFIG = Config({
     'EDIT_SLEEP' : 3,
     'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
     'UPLOAD_AS_DOC' : 0,
+    'UPLOAD_AS_ZIP' : 0,
     'ARIA2_DIR' : 'downloads',
     'TORRENT_TRACKER' : '',
     'BAR_SIZE' : 10,
@@ -84,9 +85,10 @@ COMMAND = Command({
     'LEECH' : 'leech',
     'CANCEL_LEECH' : 'cancel',
     'LEECH_LIST' : 'list',
+    'UPLOAD_AS_DOC' : 'upload_as_doc',
+    'UPLOAD_AS_ZIP' : 'upload_as_zip',
     'SET_THUMBNAIL' : 'set_thumbnail',
     'RESET_THUMBNAIL' : 'reset_thumbnail',
-    'UPLOAD_AS_DOC' : 'upload_as_doc',
     'SET_TRACKER' : 'set_tracker'
 })
 
@@ -100,6 +102,7 @@ STATUS = Status({
     'START_TIME' : time(),
     'ARIA2_API' : None,
     'UPLOAD_AS_DOC' : bool(int(CONFIG.UPLOAD_AS_DOC)),
+    'UPLOAD_AS_ZIP' : bool(int(CONFIG.UPLOAD_AS_ZIP)),
     'DEFAULT_TRACKER' : CONFIG.TORRENT_TRACKER.split(','),
     'CHAT_ID' : []
 })
