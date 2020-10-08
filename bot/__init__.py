@@ -90,7 +90,7 @@ COMMAND = Command({
     'SET_THUMBNAIL' : 'set_thumbnail',
     'RESET_THUMBNAIL' : 'reset_thumbnail',
     'SET_TRACKER' : 'set_tracker'
-})
+}, 'COMMAND_')
 
 # GOAL:
 # set status

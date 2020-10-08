@@ -8,10 +8,13 @@ import os
 class Command:
     __list = {}
 
-    def __init__(self, custom = {}):
+    def __init__(self, custom = {}, prefix = ''):
+        self.__prefix = prefix
         for key in custom:
             if custom[key] == -1:
                 custom[key] = self.__evar(key, should_prompt=True)
+            else:
+                custom[key] = self.__evar(key, custom[key])
         self.__list.update(custom)
 
     def __getattr__(self, name):
@@ -20,6 +23,7 @@ class Command:
         raise AttributeError
 
     def __evar(self, name: str, default=None, should_prompt=False):
+        name = self.__prefix + name
         value = os.environ.get(name, default)
         if not value and should_prompt:
             try:
