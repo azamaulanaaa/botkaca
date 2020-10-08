@@ -13,6 +13,8 @@ class Command:
         for key in custom:
             if custom[key] == -1:
                 custom[key] = self.__evar(key, should_prompt=True)
+            else:
+                custom[key] = self.__evar(key, custom[key])
         self.__list.update(custom)
 
     def __getattr__(self, name):
