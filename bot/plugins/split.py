@@ -41,25 +41,24 @@ async def func(filepath, size):
                     yield f
 
 async def video(filepath, size):
-    supported = ['.mp4','.mkv','.avi','.webm','.wmv','.mov']
     if not os_path.isfile(filepath):
         LOGGER.error('File not found : ' + filepath)
         raise Exception('File not found')
     
     file_path_name, file_ext = os_path.splitext(filepath)
-    if not file_ext in supported:
-        LOGGER.error('File not supported : ' + filepath)
-        raise Exception('File not supported')
-
     probe = await ffprobe.func(filepath)
-    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-    audio_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'audio'), None)
-    duration = int(float(video_stream["duration"]))
-    vbyterate = int(video_stream['bit_rate']) / 8
-    abyterate = int(audio_stream['bit_rate']) / 8
+    
+    bitrate = 0
+    for stream in probe['streams']:
+        if('bit_rate' in stream):
+            bitrate += int(stream['bit_rate'])
+        elif('tags' in stream and 'BPS' in stream['tags']):
+            bitrate += int(stream['tags']['BPS'])
+
+    duration = int(float(probe['format']["duration"]))
 
     size = size * 9 // 10
-    max_duration = size // (vbyterate + abyterate)
+    max_duration = size // (bitrate/8)
 
     splited_duration = 0
     i = 0
