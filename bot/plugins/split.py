@@ -49,8 +49,7 @@ async def video(filepath, size):
     probe = await ffprobe.func(filepath)
     
     duration = float(probe['format']["duration"])
-
-    size = size * 9 // 10
+    size = size * 98 // 100
 
     splited_duration = 0
     i = 0
