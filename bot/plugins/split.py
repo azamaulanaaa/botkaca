@@ -48,17 +48,9 @@ async def video(filepath, size):
     file_path_name, file_ext = os_path.splitext(filepath)
     probe = await ffprobe.func(filepath)
     
-    bitrate = 0
-    for stream in probe['streams']:
-        if('bit_rate' in stream):
-            bitrate += int(stream['bit_rate'])
-        elif('tags' in stream and 'BPS' in stream['tags']):
-            bitrate += int(stream['tags']['BPS'])
-
-    duration = int(float(probe['format']["duration"]))
+    duration = float(probe['format']["duration"])
 
     size = size * 9 // 10
-    max_duration = size // (bitrate/8)
 
     splited_duration = 0
     i = 0
@@ -69,12 +61,12 @@ async def video(filepath, size):
         cmd = [
             "ffmpeg",
             "-hide_banner",
-            "-i",
-            filepath,
             '-ss',
             str(splited_duration),
-            '-t',
-            str(max_duration),
+            "-i",
+            filepath,
+            '-fs',
+            str(size),
             '-c',
             'copy',
             '-async',
@@ -94,7 +86,7 @@ async def video(filepath, size):
         if not stderr.decode():
             LOGGER.error(f'[stderr] {stderr.decode()}')
 
-        splited_duration += max_duration
+        splited_duration += float((await ffprobe.func(out_file))['format']["duration"])
         
         LOGGER.debug(out_file)
         yield out_file
