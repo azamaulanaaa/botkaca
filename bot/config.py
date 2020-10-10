@@ -6,22 +6,13 @@
 import os
 
 class Config:
-    __list = {}
-
-    def __init__(self, custom = {}):
+    def __init__(self, custom = {}, prefix = ''):
+        self.prefix = prefix
         for key in custom:
-            if custom[key] == -1:
-                custom[key] = self.__evar(key, should_prompt=True)
-            else:
-                custom[key] = self.__evar(key, custom[key])
-        self.__list.update(custom)
-
-    def __getattr__(self, name):
-        if name in self.__list:
-            return self.__list[name]
-        raise AttributeError
+            self.__setattr__(key,self.__evar(key, custom[key], bool(custom[key] == None)))
 
     def __evar(self, name: str, default=None, should_prompt=False):
+        name = self.prefix + name
         value = os.environ.get(name, default)
         if not value and should_prompt:
             try:
@@ -32,5 +23,5 @@ class Config:
         return value
     
     def __iter__(self):
-        for key in self.__list:
-            yield (key, self.__list[key])
+        for key in self.__dict__:
+            yield (key, self.__dict__[key])

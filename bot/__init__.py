@@ -9,10 +9,10 @@ CONFIG = Config({
     'WORKDIR' : 'sessions',
     'LOG_FILE' : 'log.txt',
     'MAX_LOG_SIZE' : 10 * 1024 * 1024,
-    'API_HASH' : -1,
-    'API_ID' : -1,
-    'BOT_TOKEN' : -1,
-    'BOT_PASSWORD' : -1,
+    'API_HASH' : None,
+    'API_ID' : None,
+    'BOT_TOKEN' : None,
+    'BOT_PASSWORD' : None,
     'CHAT_ID' : '',
     'EDIT_SLEEP' : 3,
     'UPLOAD_MAX_SIZE' : 2000 * 1024 * 1024,
@@ -76,9 +76,7 @@ LOCAL = __import__(name = 'bot.locals.' + CONFIG.LOCAL, fromlist = ['LOCAL']).LO
 # GOAL:
 # load Command format
 
-from bot.command import Command
-
-COMMAND = Command({
+COMMAND = Config({
     'START' : 'start',
     'PASSWORD' : 'pass',
     'HELP' : 'help',
@@ -95,11 +93,7 @@ COMMAND = Command({
 # GOAL:
 # set status
 
-from time import time
-from bot.status import Status
-
-STATUS = Status({
-    'START_TIME' : time(),
+STATUS = type('obj', (object,), {
     'ARIA2_API' : None,
     'UPLOAD_AS_DOC' : bool(int(CONFIG.UPLOAD_AS_DOC)),
     'UPLOAD_AS_ZIP' : bool(int(CONFIG.UPLOAD_AS_ZIP)),
