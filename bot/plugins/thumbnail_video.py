@@ -21,9 +21,9 @@ async def func(filepath):
     video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
     try:
-        duration = float(video_stream["duration"]) // 2
+        duration = float(video_stream["duration"]) // 30
     except:
-        duration = 0
+        duration = 10
 
     out_file = filepath + ".jpg"
     
@@ -35,7 +35,7 @@ async def func(filepath):
         "-i",
         filepath,
         '-vframes',
-        '1',
+        '30',
         '-vf',
         'scale=320:-1',
         '-y',
